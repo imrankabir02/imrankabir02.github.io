@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DigiTal Clock</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: blueviolet;
+            height: auto;
+        }
+
+        h2 {
+            font-family:'Courier New', Courier, monospace;
+            color: blanchedalmond;
+        }
+
+        .clock {
+            text-transform: capitalize;
+            display: inline-flex;
+        }
+    </style>
+</head>
+<body>
+    <h2>Digital Clock</h2>
+
+    <div class="clock">
+        <div>
+            <span id="hours">00</span>
+            <span class="text">hours</span>
+        </div>
+
+        <div>
+            <span id="minutes">00</span>
+            <span class="text">minutes</span>
+        </div>
+
+        <div>
+            <span id="seconds">00</span>
+            <span class="text">seconds</span>
+        </div>
+
+        <div>
+            <span id="ampm">AM</span>
+        </div>
+    </div> 
+
+    <script>
+        function updateTime(){
+            let date = new Date();
+
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            let seconds = date.getSeconds();
+            let ampm = hours > 12 ? 'PM' : 'AM';
+
+            hours = hours > 12 ? (hours%12) : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds <10 ? '0' + seconds : seconds;
+
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+            document.getElementById('seconds').textContent = seconds;
+            document.getElementById('ampm').textContent = ampm;
+        }
+        setInterval(updateTime,1000);
+    </script>
+</body>
+</html>
