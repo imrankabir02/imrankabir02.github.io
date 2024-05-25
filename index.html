@@ -1,32 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DigiTal Clock</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            text-align: center;
-            background-color: blueviolet;
-            height: auto;
-        }
-
-        h2 {
-            font-family:'Courier New', Courier, monospace;
-            color: blanchedalmond;
-        }
-
-        .clock {
-            text-transform: capitalize;
-            display: inline-flex;
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+    <link rel="stylesheet" type="text/css" href="src/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css" />
 </head>
+
 <body>
     <h2>Portfolio is under construction.....</h2>
-
     <div class="clock">
         <div>
             <span id="hours">00</span>
@@ -46,27 +31,68 @@
         <div>
             <span id="ampm">AM</span>
         </div>
-    </div> 
+    </div>
 
+    <header class="header" id="header">
+        <a href="index.html" class="logo">
+            <span class="main-icon"></span><span>Kabir</span>
+        </a>
+
+        <div class="navbar">
+            <a href="index.html">Home</a>
+            <a href="src/pages/skills.html">Skills</a>
+            <a href="src/pages/education.html">Education</a>
+            <a href="src/pages/career.html">Career</a>
+        </div>
+
+        <div class="main">
+            <a href="src/pages/contact.html" class="user main-items">
+                <i class="fas fa-envelope cm-icon"></i>
+                Contact Me
+            </a>
+            <div class="main-items menu-icon-container" id="menu-icon-js">
+                <div class="bx bx-menu" id="menu-icon"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="page">
+        <section class="about" id="about">
+            <div class="about-content">
+                <div class="column right">
+                    <img src="Assets/Img/20210815_151336.jpg" alt="" />
+                </div>
+                <div class="column left">
+                    <div class="text">
+                        I am a motivated <span id="typed" class="iAm"></span>
+                    </div>
+                    <p>
+                        with a profound passion for the tech industry and a relentless
+                        drive for continuous learning. I am eager to find a dynamic and
+                        rewarding role where I can apply my expertise and creativity to
+                        deliver impactful solutions and thrive in a forward-thinking
+                        environment.
+                    </p>
+                    <div class="buttons">
+                        <a href="">Download CV</a>
+                        <a href="src/pages/contact.html" class="cm-button">Contact Me</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+
+    <script type="text/javascript" src="src/script.js"></script>
+
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
     <script>
-        function updateTime(){
-            let date = new Date();
-
-            let hours = date.getHours();
-            let minutes = date.getMinutes();
-            let seconds = date.getSeconds();
-            let ampm = hours > 12 ? 'PM' : 'AM';
-
-            hours = hours > 12 ? (hours%12) : hours;
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-            seconds = seconds <10 ? '0' + seconds : seconds;
-
-            document.getElementById('hours').textContent = hours;
-            document.getElementById('minutes').textContent = minutes;
-            document.getElementById('seconds').textContent = seconds;
-            document.getElementById('ampm').textContent = ampm;
-        }
-        setInterval(updateTime,1000);
+        var typed = new Typed('#typed', {
+            strings: ['Programmer', 'Web Developer'],
+            typeSpeed: 60,
+        });
     </script>
+
 </body>
+
 </html>
