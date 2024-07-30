@@ -120,10 +120,25 @@
 
     <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
     <script>
-        var typed = new Typed('#typed', {
+        var options = {
             strings: ['Programmer', 'Web Developer'],
-            typeSpeed: 85,
-        });
+            typeSpeed: 50,
+            backSpeed: 50,
+            loop: true
+        };
+        
+        var typed = new Typed('#typed', options);
+        
+        // Function to change the strings dynamically
+        function updateTypedStrings(newStrings) {
+            typed.strings = newStrings;
+            typed.reset();
+        }
+        
+        // Example of changing strings after 5 seconds
+        setTimeout(() => {
+            updateTypedStrings(['Programmer', 'Web Developer']);
+        }, 0);
     </script>
 
 </body>
