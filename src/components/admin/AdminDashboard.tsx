@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { PortfolioData, Experience, Project, Skill } from "@/types/portfolio";
 import { GitHubConfig, saveFileToGitHub } from "@/lib/github-api";
 import {
@@ -116,13 +117,13 @@ export default function AdminDashboard({
           <span className="text-xs text-slate-500 font-mono">{config.owner}/{config.repo}</span>
         </div>
         <div className="flex items-center gap-3">
-          <a
+          <Link
             href="/"
             target="_blank"
             className="text-sm text-slate-400 hover:text-white transition-colors"
           >
             View Site →
-          </a>
+          </Link>
           <button
             onClick={handleSave}
             disabled={saving}
