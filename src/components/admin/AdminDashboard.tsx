@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { PortfolioData, Experience, Project, Skill } from "@/types/portfolio";
-import { GitHubConfig, saveFileToGitHub } from "@/lib/github-api";
+import { savePortfolioData } from "@/lib/supabase";
 import {
   Save, LogOut, Plus, Trash2, Loader2, User, Briefcase,
   Code2, FolderGit2, Mail, ChevronDown, ChevronUp
@@ -12,19 +12,16 @@ import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 
 interface AdminDashboardProps {
-  config: GitHubConfig;
   initialData: PortfolioData;
-  initialSha: string;
   onLogout: () => void;
 }
 
 type Section = "hero" | "about" | "skills" | "experience" | "projects" | "contact";
 
 export default function AdminDashboard({
-  config, initialData, initialSha, onLogout,
+  initialData, onLogout,
 }: AdminDashboardProps) {
   const [data, setData] = useState<PortfolioData>(initialData);
-  const [sha, setSha] = useState(initialSha);
   const [saving, setSaving] = useState(false);
   const [activeSection, setActiveSection] = useState<Section>("hero");
 
@@ -40,12 +37,8 @@ export default function AdminDashboard({
   const handleSave = async () => {
     setSaving(true);
     try {
-      await saveFileToGitHub(config, data, sha);
-      toast.success("Portfolio saved! GitHub Actions will redeploy your site shortly.");
-      // Fetch updated sha for next save
-      const { fetchFileFromGitHub } = await import("@/lib/github-api");
-      const { sha: newSha } = await fetchFileFromGitHub(config);
-      setSha(newSha);
+      await savePortfolioData(data);
+      toast.success("Portfolio saved! Changes are now live.");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Save failed");
     } finally {
@@ -114,7 +107,7 @@ export default function AdminDashboard({
       <header className="border-b border-white/10 px-6 py-3 flex items-center justify-between bg-[#111118]">
         <div className="flex items-center gap-3">
           <span className="font-bold text-lg text-gradient">Portfolio Admin</span>
-          <span className="text-xs text-slate-500 font-mono">{config.owner}/{config.repo}</span>
+          <span className="text-xs text-slate-500 font-mono">via Supabase</span>
         </div>
         <div className="flex items-center gap-3">
           <Link
@@ -130,7 +123,7 @@ export default function AdminDashboard({
             className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors"
           >
             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-            {saving ? "Saving..." : "Save & Deploy"}
+            {saving ? "Saving..." : "Save Changes"}
           </button>
           <button
             onClick={onLogout}

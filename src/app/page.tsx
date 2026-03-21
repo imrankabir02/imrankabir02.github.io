@@ -1,5 +1,9 @@
-import portfolioData from "../../public/data/portfolio.json";
+"use client";
+
+import { useState, useEffect } from "react";
+import staticPortfolioData from "../../public/data/portfolio.json";
 import { PortfolioData } from "@/types/portfolio";
+import { fetchPortfolioData } from "@/lib/supabase";
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
 import Hero from "@/components/sections/Hero";
@@ -10,7 +14,17 @@ import Projects from "@/components/sections/Projects";
 import Contact from "@/components/sections/Contact";
 
 export default function Home() {
-  const data = portfolioData as PortfolioData;
+  const [data, setData] = useState<PortfolioData>(staticPortfolioData as PortfolioData);
+
+  useEffect(() => {
+    fetchPortfolioData()
+      .then((supabaseData) => {
+        if (supabaseData) setData(supabaseData);
+      })
+      .catch(() => {
+        // Supabase unavailable – keep the static fallback data already in state
+      });
+  }, []);
 
   return (
     <main className="min-h-screen bg-[#0a0a0f] text-slate-100">

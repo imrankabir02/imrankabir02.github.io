@@ -3,48 +3,47 @@
 import { useState } from "react";
 import Link from "next/link";
 import { PortfolioData } from "@/types/portfolio";
-import { GitHubConfig, validateGitHubToken, fetchFileFromGitHub } from "@/lib/github-api";
-import { Shield, Key, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
+import { signInAdmin, fetchPortfolioData, isSupabaseConfigured } from "@/lib/supabase";
+import { Shield, Mail, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 interface AuthGateProps {
-  onAuthenticated: (config: GitHubConfig, data: PortfolioData, sha: string) => void;
+  onAuthenticated: (data: PortfolioData) => void;
 }
 
 export default function AuthGate({ onAuthenticated }: AuthGateProps) {
-  const [token, setToken] = useState("");
-  const [owner, setOwner] = useState("imrankabir02");
-  const [repo, setRepo] = useState("imrankabir02.github.io");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!token.trim()) {
-      setError("GitHub token is required");
+    if (!email.trim() || !password.trim()) {
+      setError("Email and password are required");
+      return;
+    }
+    if (!isSupabaseConfigured) {
+      setError(
+        "Supabase is not configured. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to your environment."
+      );
       return;
     }
     setLoading(true);
     setError(null);
 
-    const config: GitHubConfig = {
-      token: token.trim(),
-      owner: owner.trim(),
-      repo: repo.trim(),
-      filePath: "public/data/portfolio.json",
-    };
-
     try {
-      const valid = await validateGitHubToken(config);
-      if (!valid) {
-        setError("Invalid token or you don't have access to this repository.");
+      await signInAdmin(email.trim(), password);
+      const portfolioData = await fetchPortfolioData();
+      if (!portfolioData) {
+        setError(
+          "No portfolio data found in Supabase. Run the schema.sql seed first."
+        );
         setLoading(false);
         return;
       }
-
-      const { content, sha } = await fetchFileFromGitHub(config);
       toast.success("Authenticated successfully!");
-      onAuthenticated(config, content, sha);
+      onAuthenticated(portfolioData);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Authentication failed");
     } finally {
@@ -61,59 +60,47 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
           </div>
           <h1 className="text-2xl font-bold text-white mb-2">Admin Panel</h1>
           <p className="text-slate-400 text-sm">
-            Enter your GitHub Personal Access Token to manage portfolio data
+            Sign in with your Supabase admin account to manage portfolio data
           </p>
         </div>
 
         <form onSubmit={handleLogin} className="card-glass p-6 space-y-4">
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-1">
-              Repository Owner
+              <Mail className="w-3.5 h-3.5 inline mr-1 text-indigo-400" />
+              Email
             </label>
             <input
-              type="text"
-              value={owner}
-              onChange={(e) => setOwner(e.target.value)}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-slate-200 text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-              placeholder="your-github-username"
+              placeholder="admin@example.com"
+              autoComplete="email"
             />
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-300 mb-1">
-              Repository Name
-            </label>
-            <input
-              type="text"
-              value={repo}
-              onChange={(e) => setRepo(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-slate-200 text-sm focus:outline-none focus:border-indigo-500 transition-colors"
-              placeholder="username.github.io"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">
-              <Key className="w-3.5 h-3.5 inline mr-1 text-indigo-400" />
-              GitHub Personal Access Token
+              Password
             </label>
             <input
               type="password"
-              value={token}
-              onChange={(e) => setToken(e.target.value)}
-              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-slate-200 text-sm focus:outline-none focus:border-indigo-500 transition-colors font-mono"
-              placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
-              autoComplete="off"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 text-slate-200 text-sm focus:outline-none focus:border-indigo-500 transition-colors"
+              placeholder="••••••••"
+              autoComplete="current-password"
             />
             <p className="text-xs text-slate-500 mt-1">
-              Requires <code className="text-indigo-400">contents:write</code> permission.{" "}
+              Create your admin user in the{" "}
               <a
-                href="https://github.com/settings/tokens/new?scopes=repo&description=Portfolio+Admin"
+                href="https://supabase.com/dashboard"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-indigo-400 hover:underline"
               >
-                Create token →
+                Supabase dashboard →
               </a>
             </p>
           </div>
@@ -133,7 +120,7 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
             {loading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
-                Authenticating...
+                Signing in...
               </>
             ) : (
               <>
@@ -146,9 +133,11 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
 
         <div className="mt-4 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-lg">
           <p className="text-xs text-yellow-500/80">
-            <strong className="text-yellow-400">Security note:</strong> Your token is never
-            stored on any server. It lives only in your browser&apos;s memory for this session
-            and is used directly with the GitHub API.
+            <strong className="text-yellow-400">Setup required:</strong> Add{" "}
+            <code className="text-indigo-400">NEXT_PUBLIC_SUPABASE_URL</code> and{" "}
+            <code className="text-indigo-400">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> to your
+            environment, then run <code className="text-indigo-400">supabase/schema.sql</code> in
+            the Supabase SQL editor.
           </p>
         </div>
 
