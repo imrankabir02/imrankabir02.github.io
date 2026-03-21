@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { PortfolioData } from "@/types/portfolio";
 import { GitHubConfig, validateGitHubToken, fetchFileFromGitHub } from "@/lib/github-api";
 import { Shield, Key, AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
@@ -152,7 +153,7 @@ export default function AuthGate({ onAuthenticated }: AuthGateProps) {
         </div>
 
         <p className="text-center mt-6 text-sm text-slate-500">
-          <a href="/" className="text-indigo-400 hover:underline">← Back to portfolio</a>
+          <Link href="/" className="text-indigo-400 hover:underline">← Back to portfolio</Link>
         </p>
       </div>
     </div>
