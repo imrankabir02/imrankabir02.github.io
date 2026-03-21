@@ -32,7 +32,6 @@ export async function savePortfolioData(portfolioData: PortfolioData): Promise<v
         lastUpdated: new Date().toISOString(),
       },
     },
-    updated_at: new Date().toISOString(),
   });
   if (error) throw new Error(error.message);
 }
