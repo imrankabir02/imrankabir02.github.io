@@ -1,144 +1,151 @@
-"use client";
-
-import { useState } from "react";
-import { Project as ProjectData } from "@/types/portfolio";
-import { Github, ExternalLink, Star } from "lucide-react";
+import { ArrowUpRight, Lock } from "lucide-react";
+import Section from "../ui/Section";
+import Reveal from "../ui/Reveal";
+import { Metric, OwnershipBadge, StatusBadge } from "../ui/Badge";
+import { PROJECTS, type Project } from "@/data/portfolio";
 import { cn } from "@/lib/utils";
 
-interface ProjectsProps {
-  data: ProjectData[];
+function ProjectCard({
+  project,
+  featured,
+}: {
+  project: Project;
+  featured: boolean;
+}) {
+  return (
+    <article
+      className={cn(
+        "group flex h-full flex-col rounded-2xl border border-line bg-elev/40 p-6 transition-colors duration-300 hover:border-line-strong md:p-7",
+      )}
+    >
+      <div className="flex items-start justify-between gap-6">
+        <div className="flex flex-wrap items-center gap-3">
+          <OwnershipBadge ownership={project.ownership} />
+          <StatusBadge status={project.status} />
+        </div>
+        {project.metric && project.metricLabel ? (
+          <Metric value={project.metric} label={project.metricLabel} />
+        ) : null}
+      </div>
+
+      {/* The lead card gets the full grid width, so its prose and highlights
+          sit side by side instead of stranding half the row empty. */}
+      <div
+        className={cn(
+          featured && "lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:gap-14",
+        )}
+      >
+        <div>
+          <h3
+            className={cn(
+              "mt-5 font-semibold tracking-tight text-fg",
+              featured ? "text-2xl md:text-[1.75rem]" : "text-xl",
+            )}
+          >
+            {project.title}
+          </h3>
+
+          <p className="mt-2 font-mono text-xs leading-relaxed text-fg3">
+            {project.org ? `${project.org} · ` : ""}
+            {project.context}
+          </p>
+
+          <p
+            className={cn(
+              "mt-5 border-l-2 border-accent/50 pl-4 leading-relaxed text-fg",
+              featured ? "text-base md:text-lg" : "text-[0.95rem]",
+            )}
+          >
+            {project.outcome}
+          </p>
+
+          <p className="mt-5 max-w-2xl text-pretty text-[0.9375rem] leading-relaxed text-fg2">
+            {project.description}
+          </p>
+        </div>
+
+        {project.highlights?.length ? (
+          <ul
+            className={cn(
+              "mt-5 space-y-2.5",
+              featured && "lg:mt-5 lg:self-center lg:border-l lg:border-line lg:pl-10",
+            )}
+          >
+            {project.highlights.map((highlight) => (
+              <li
+                key={highlight}
+                className="flex gap-3 text-[0.875rem] leading-relaxed text-fg2"
+              >
+                <span
+                  aria-hidden
+                  className="mt-[0.4rem] h-1 w-1 shrink-0 rounded-full bg-accent"
+                />
+                <span>{highlight}</span>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
+
+      {/* Footer is pushed to the bottom so cards in a row line up. */}
+      <div className="mt-auto pt-7">
+        <ul className="flex flex-wrap gap-2">
+          {project.technologies.map((tech) => (
+            <li key={tech} className="chip">
+              {tech}
+            </li>
+          ))}
+        </ul>
+
+        {project.appLink || project.note ? (
+          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-line pt-5">
+            {project.appLink ? (
+              <a
+                href={project.appLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/link inline-flex items-center gap-1.5 text-sm font-medium text-fg transition-colors hover:text-accent"
+              >
+                Visit live site
+                <ArrowUpRight
+                  className="h-3.5 w-3.5 transition-transform group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5"
+                  strokeWidth={2}
+                />
+              </a>
+            ) : null}
+            {project.note ? (
+              <p className="inline-flex items-start gap-2 font-mono text-[0.6875rem] leading-relaxed text-fg3">
+                <Lock className="mt-0.5 h-3 w-3 shrink-0" strokeWidth={1.8} />
+                {project.note}
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
+    </article>
+  );
 }
 
-export default function Projects({ data }: ProjectsProps) {
-  const [showAll, setShowAll] = useState(false);
-  const allTags = ["All", ...Array.from(new Set(data.flatMap((p) => p.tags)))];
-  const [activeTag, setActiveTag] = useState("All");
-
-  const filtered = activeTag === "All" ? data : data.filter((p) => p.tags.includes(activeTag));
-  const displayed = showAll ? filtered : filtered.slice(0, 6);
-
+export default function Projects() {
   return (
-    <section id="projects" className="section-padding bg-white/2">
-      <div className="section-container">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <p className="text-indigo-400 text-sm font-mono font-medium mb-2 uppercase tracking-widest">
-            {"// my_work"}
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white">Projects</h2>
-        </div>
-
-        {/* Tag filter */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
-          {allTags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => {
-                setActiveTag(tag);
-                setShowAll(false);
-              }}
-              className={cn(
-                "px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200",
-                activeTag === tag
-                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-500/25"
-                  : "bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:border-white/20"
-              )}
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
-
-        {/* Projects grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-6">
-          {displayed.map((project) => (
-            <div
-              key={project.id}
-              className={cn(
-                "card-glass p-6 flex flex-col hover:border-indigo-500/30 transition-all duration-200 group",
-                project.featured && "border-indigo-500/20"
-              )}
-            >
-              {/* Header */}
-              <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  {project.featured && (
-                    <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-                  )}
-                  <h3 className="font-semibold text-white group-hover:text-indigo-300 transition-colors">
-                    {project.title}
-                  </h3>
-                </div>
-                <div className="flex items-center gap-2">
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-slate-500 hover:text-white transition-colors"
-                      aria-label="GitHub"
-                    >
-                      <Github className="w-4 h-4" />
-                    </a>
-                  )}
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-slate-500 hover:text-teal-400 transition-colors"
-                      aria-label="Live demo"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  )}
-                </div>
-              </div>
-
-              {/* Description */}
-              <p className="text-slate-400 text-sm leading-relaxed flex-1 mb-4">
-                {project.description}
-              </p>
-
-              {/* Tags */}
-              <div className="flex flex-wrap gap-1.5 mb-3">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="badge bg-teal-500/10 text-teal-400 border border-teal-500/20 text-xs"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              {/* Tech stack */}
-              <div className="flex flex-wrap gap-1.5">
-                {project.techStack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="badge bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 text-xs"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Show more */}
-        {filtered.length > 6 && (
-          <div className="text-center mt-10">
-            <button
-              onClick={() => setShowAll((v) => !v)}
-              className="border border-white/20 hover:border-white/40 text-slate-300 hover:text-white px-8 py-2.5 rounded-full font-medium transition-all duration-200"
-            >
-              {showAll ? "Show Less" : `Show All (${filtered.length})`}
-            </button>
-          </div>
-        )}
+    <Section
+      id="work"
+      index="04"
+      eyebrow="Work"
+      title="Selected systems"
+      lede="Backend systems don't photograph well, so each card is the problem, the decision I made, and what it cost — not a screenshot. Employer and client work is described at the engineering level only."
+    >
+      <div className="grid gap-5 lg:grid-cols-2">
+        {PROJECTS.map((project, i) => (
+          <Reveal
+            key={project.title}
+            delay={(i % 2) * 0.06}
+            className={cn("h-full", i === 0 && "lg:col-span-2")}
+          >
+            <ProjectCard project={project} featured={i === 0} />
+          </Reveal>
+        ))}
       </div>
-    </section>
+    </Section>
   );
 }

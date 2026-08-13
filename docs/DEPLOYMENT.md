@@ -83,8 +83,8 @@ jobs:
 
 ## How Data Updates Trigger Redeployment
 
-When you use the **Admin Panel**:
-1. Changes are committed to `portfolio.json` in the `main` branch
+When you edit content:
+1. Changes are committed to `src/data/portfolio.ts` in the `main` branch
 2. The push to `main` triggers the GitHub Actions workflow
 3. The workflow rebuilds the static site with the new data
 4. The updated site deploys to GitHub Pages (~2-3 min total)
@@ -128,5 +128,4 @@ NEXT_PUBLIC_SITE_URL=https://testtracker.me
 
 The static export produces:
 - `out/` directory with all HTML, CSS, JS assets
-- `out/data/portfolio.json` for client-side access
 - Zero server-side code — pure static hosting
