@@ -1,70 +1,184 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #0a0a0f;
-  --foreground: #e2e8f0;
-  --primary: #6366f1;
-  --primary-dark: #4f46e5;
-  --secondary: #14b8a6;
-  --card: #111118;
-  --card-border: #1e1e2e;
-  --muted: #64748b;
+/* ---------------------------------------------------------------
+   Design tokens. Dark is the default; light is opt-in via the
+   toggle, which stamps data-theme on <html>. Both are defined in
+   full so neither borrows colours from the other.
+   --------------------------------------------------------------- */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0a0b0d;
+  --elev: #101216;
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --fg: #edeef0;
+  --fg-2: #a4aab4;
+  --fg-3: #6e757f;
+  --accent: #e9b44c;
+  --accent-soft: rgba(233, 180, 76, 0.13);
+  --ok: #4ade80;
+  --grid: rgba(255, 255, 255, 0.045);
 }
 
-* {
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #fbfaf8;
+  --elev: #ffffff;
+  --line: rgba(18, 20, 24, 0.11);
+  --line-strong: rgba(18, 20, 24, 0.24);
+  --fg: #14161a;
+  --fg-2: #4c535d;
+  --fg-3: #79818c;
+  --accent: #8a5a0b;
+  --accent-soft: rgba(138, 90, 11, 0.09);
+  --ok: #157f3d;
+  --grid: rgba(18, 20, 24, 0.05);
+}
+
+html {
   scroll-behavior: smooth;
+  /* clears the sticky header when jumping to an anchor */
+  scroll-padding-top: 5.5rem;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  font-feature-settings: "kern", "liga", "calt";
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border: 3px solid var(--bg);
+  border-radius: 999px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-shell px-5 sm:px-8 lg:px-10;
+  }
+
+  /* Small uppercase mono label — used for section numbers, badges,
+     field names. The workhorse of the whole layout. */
+  .label {
+    @apply font-mono text-[0.6875rem] uppercase tracking-[0.18em];
+  }
+
+  .rule {
+    @apply h-px w-full bg-line;
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full border border-line px-2.5 py-1
+           font-mono text-[0.6875rem] tracking-tight text-fg2
+           transition-colors duration-200;
+  }
+
+  .chip-hover:hover .chip,
+  .chip:hover {
+    @apply border-line-strong text-fg;
+  }
+
+  .link-underline {
+    @apply relative inline-flex items-center gap-1.5 text-fg
+           after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full
+           after:origin-left after:scale-x-0 after:bg-accent
+           after:transition-transform after:duration-300
+           hover:text-accent hover:after:scale-x-100;
+  }
 }
 
 @layer utilities {
-  .text-gradient {
-    @apply bg-gradient-to-r from-indigo-400 via-purple-400 to-teal-400 bg-clip-text text-transparent;
+  /* Faint engineering-graph grid, faded out toward the edges. */
+  .bg-grid {
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 64px 64px;
+    background-position: center top;
+    -webkit-mask-image: radial-gradient(
+      ellipse 90% 70% at 50% 0%,
+      #000 20%,
+      transparent 78%
+    );
+    mask-image: radial-gradient(
+      ellipse 90% 70% at 50% 0%,
+      #000 20%,
+      transparent 78%
+    );
   }
 
-  .card-glass {
-    @apply bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl;
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
   }
 
-  .section-container {
-    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
-
-  .section-padding {
-    @apply py-20 md:py-28;
-  }
-
-  .badge {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  .tnum {
+    font-variant-numeric: tabular-nums;
   }
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: var(--background);
-}
-::-webkit-scrollbar-thumb {
-  background: #374151;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #6366f1;
-}
-
-/* Selection */
-::selection {
-  background: #6366f1;
-  color: white;
+/* Reveal-on-scroll. Hidden only when JS is confirmed running (html.js, set by
+   the pre-paint script) and the visitor has not asked for reduced motion —
+   so the content can never be stranded invisible. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
+      transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  html.js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Printing a portfolio is a real thing recruiters do. */
+@media print {
+  [data-print-hide] {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+    color: #000;
+  }
+}

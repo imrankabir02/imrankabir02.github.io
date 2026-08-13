@@ -1,63 +1,49 @@
-"use client";
+import Section from "../ui/Section";
+import Reveal from "../ui/Reveal";
+import { ABOUT_TEXT, EXPERIENCES, PROJECTS } from "@/data/portfolio";
 
-import { AboutSection as AboutData } from "@/types/portfolio";
-import { MapPin, Briefcase, CheckCircle2 } from "lucide-react";
+// The hero already carries paragraph one; About picks up from paragraph two.
+const BODY = ABOUT_TEXT.split(/\n\s*\n/)
+  .slice(1)
+  .map((p) => p.trim())
+  .filter(Boolean);
 
-interface AboutProps {
-  data: AboutData;
-}
+const FACTS = [
+  { value: String(EXPERIENCES.length), label: "Roles held" },
+  { value: String(PROJECTS.length), label: "Systems shipped" },
+  { value: "2024", label: "Shipping since" },
+];
 
-export default function About({ data }: AboutProps) {
+export default function About() {
   return (
-    <section id="about" className="section-padding">
-      <div className="section-container">
-        {/* Section header */}
-        <div className="text-center mb-16">
-          <p className="text-indigo-400 text-sm font-mono font-medium mb-2 uppercase tracking-widest">
-            {"// about_me"}
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white">Who I Am</h2>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Bio card */}
-          <div className="card-glass p-8">
-            <p className="text-slate-300 leading-relaxed text-base mb-6">
-              {data.bio}
-            </p>
-
-            <div className="flex flex-wrap gap-4 text-sm text-slate-400">
-              {data.location && (
-                <span className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-indigo-400" />
-                  {data.location}
-                </span>
-              )}
-              {data.yearsOfExperience && (
-                <span className="flex items-center gap-2">
-                  <Briefcase className="w-4 h-4 text-teal-400" />
-                  {data.yearsOfExperience}+ years of experience
-                </span>
-              )}
-            </div>
+    <Section id="about" index="01" eyebrow="About" title="The 2am details">
+      <div className="grid gap-14 lg:grid-cols-[1.5fr_1fr] lg:gap-20">
+        <Reveal>
+          <div className="space-y-6">
+            {BODY.map((paragraph) => (
+              <p
+                key={paragraph.slice(0, 24)}
+                className="text-pretty text-base leading-[1.75] text-fg2 md:text-[1.0625rem]"
+              >
+                {paragraph}
+              </p>
+            ))}
           </div>
+        </Reveal>
 
-          {/* Highlights */}
-          <div>
-            <h3 className="text-lg font-semibold text-white mb-6">Key Highlights</h3>
-            <ul className="space-y-4">
-              {data.highlights.map((highlight, i) => (
-                <li key={i} className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-teal-400 mt-0.5 shrink-0" />
-                  <span className="text-slate-300 text-sm leading-relaxed">
-                    {highlight}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <Reveal delay={0.08} className="lg:self-start">
+          <dl className="grid grid-cols-3 gap-px overflow-hidden rounded-2xl border border-line bg-line lg:grid-cols-1">
+            {FACTS.map((fact) => (
+              <div key={fact.label} className="bg-bg px-5 py-6">
+                <dd className="tnum font-mono text-2xl font-medium tracking-tight text-accent md:text-3xl">
+                  {fact.value}
+                </dd>
+                <dt className="label mt-2 text-fg3">{fact.label}</dt>
+              </div>
+            ))}
+          </dl>
+        </Reveal>
       </div>
-    </section>
+    </Section>
   );
 }

@@ -1,57 +1,15 @@
-import { Terminal, Github, Linkedin, Mail } from "lucide-react";
-import { HeroSection } from "@/types/portfolio";
+import { MY_DETAILS } from "@/data/portfolio";
 
-interface FooterProps {
-  hero: HeroSection;
-}
-
-export default function Footer({ hero }: FooterProps) {
-  const year = new Date().getFullYear();
-
+export default function Footer() {
   return (
-    <footer className="border-t border-white/10 py-8">
-      <div className="section-container flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2 text-slate-400 text-sm">
-          <Terminal className="w-4 h-4 text-indigo-400" />
-          <span>
-            Built by{" "}
-            <span className="text-white font-medium">{hero.name}</span> © {year}
-          </span>
-        </div>
-
-        <div className="flex items-center gap-4">
-          {hero.socialLinks.github && (
-            <a
-              href={hero.socialLinks.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-500 hover:text-white transition-colors"
-              aria-label="GitHub"
-            >
-              <Github className="w-4 h-4" />
-            </a>
-          )}
-          {hero.socialLinks.linkedin && (
-            <a
-              href={hero.socialLinks.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-slate-500 hover:text-white transition-colors"
-              aria-label="LinkedIn"
-            >
-              <Linkedin className="w-4 h-4" />
-            </a>
-          )}
-          {hero.socialLinks.email && (
-            <a
-              href={`mailto:${hero.socialLinks.email}`}
-              className="text-slate-500 hover:text-white transition-colors"
-              aria-label="Email"
-            >
-              <Mail className="w-4 h-4" />
-            </a>
-          )}
-        </div>
+    <footer className="border-t border-line py-10">
+      <div className="shell flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+        <p className="font-mono text-[0.6875rem] tracking-tight text-fg3">
+          © {new Date().getFullYear()} {MY_DETAILS.name} · {MY_DETAILS.address}
+        </p>
+        <p className="font-mono text-[0.6875rem] tracking-tight text-fg3">
+          Next.js · Tailwind · static export, deployed on push
+        </p>
       </div>
     </footer>
   );

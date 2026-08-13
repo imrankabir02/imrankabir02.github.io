@@ -4,73 +4,62 @@
 
 - **Node.js** 18+ (20 recommended)
 - **npm** 9+
-- A modern browser
 
 ## Installation
 
 ```bash
-# 1. Clone the repository
 git clone https://github.com/imrankabir02/imrankabir02.github.io.git
 cd imrankabir02.github.io
-
-# 2. Install dependencies
 npm install
-
-# 3. Start the development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the portfolio.  
-Open [http://localhost:3000/admin](http://localhost:3000/admin) to access the admin panel.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Available Scripts
+## Available scripts
 
 | Script | Description |
 |---|---|
-| `npm run dev` | Start development server with hot reload |
-| `npm run build` | Build production static export to `/out` |
-| `npm run start` | Start production server (after build) |
-| `npm run lint` | Run ESLint |
+| `npm run dev` | Development server with hot reload |
+| `npm run build` | Production build + static export to `out/` |
+| `npm run start` | Serve the production build |
+| `npm run lint` | ESLint via `next lint` |
+| `npm run typecheck` | `tsc --noEmit` |
 
-## Customizing Portfolio Data
+## Editing content
 
-All portfolio content lives in `public/data/portfolio.json`.  
-Edit this file directly for quick changes, or use the Admin Panel for a GUI approach.
+All content lives in **`src/data/portfolio.ts`** — a single typed module. There
+is no CMS and no database; edit the file, commit, and CI redeploys.
 
-### Data Structure
+| Export | Drives |
+|---|---|
+| `MY_DETAILS` | Name, title, current role, email, location, GitHub |
+| `ABOUT_TEXT` | Paragraph 1 becomes the hero lead, the rest is the About section |
+| `SKILLSETS` | The numbered capability list |
+| `SKILL_GROUPS` | The Languages / Frameworks / Data / Infrastructure chips |
+| `EXPERIENCES` | The Experience ledger |
+| `PROJECTS` | The Work cards (first entry renders as the full-width feature) |
+| `EDUCATIONS` | The Education rows |
 
-```json
-{
-  "hero": {
-    "name": "Your Name",
-    "title": "Your Title",
-    "tagline": "Your tagline",
-    "resumeUrl": "https://...",
-    "avatarUrl": "https://...",
-    "socialLinks": {
-      "github": "https://github.com/username",
-      "linkedin": "https://linkedin.com/in/username",
-      "twitter": "@handle",
-      "email": "you@example.com"
-    }
-  },
-  "about": { ... },
-  "skills": { ... },
-  "experiences": [ ... ],
-  "projects": [ ... ],
-  "contact": { ... }
-}
-```
+Each `Experience` and `Project` carries an `ownership` tag (`LEAD`, `SOLE`,
+`SOLO`, `BACKEND`) and a one-line `outcome`; `metric` / `metricLabel` are
+optional and render as the large figure on the card.
 
-## Project Dependencies
+Run `npm run typecheck` after editing — the interfaces at the top of the file
+will catch a mistyped or missing field before it reaches CI.
+
+## Design tokens
+
+Colours, both themes, live as CSS custom properties in
+`src/app/globals.css` and are exposed to Tailwind (`bg-bg`, `text-fg2`,
+`border-line`, `text-accent`, …) via `tailwind.config.ts`. Changing the accent
+is a one-line edit in each of the two `:root` blocks.
+
+## Dependencies
 
 | Package | Purpose |
 |---|---|
-| `next` | React framework with static export |
-| `react` / `react-dom` | UI library |
-| `typescript` | Type safety |
-| `tailwindcss` | Utility-first CSS |
-| `lucide-react` | Icon library |
-| `framer-motion` | Animations |
-| `@octokit/rest` | GitHub API client (admin panel) |
-| `react-hot-toast` | Toast notifications |
+| `next`, `react`, `react-dom` | Framework |
+| `tailwindcss`, `postcss` | Styling |
+| `lucide-react` | Icons |
+| `typescript`, `eslint` | Tooling |

@@ -1,93 +1,81 @@
-# Imran Kabir — Portfolio Website
+# Mridha Imran Kabir — Portfolio
 
-A modern, dynamic portfolio for a mid-level backend software engineer. Built with **Next.js 14**, **TypeScript**, and **Tailwind CSS**, deployed automatically to **GitHub Pages** via **GitHub Actions CI/CD**.
+Personal site for a backend engineer, deployed to GitHub Pages at
+**[testtracker.me](https://testtracker.me)**.
 
-## ✨ Features
+Built as a static export: no database, no CMS, no runtime API. All content lives
+in one typed TypeScript module, and pushing to `main` rebuilds and redeploys.
 
-| Feature | Details |
+## Design
+
+An editorial, typographic layout rather than the usual card-and-gradient
+template — the work here is backend systems, which don't photograph well, so the
+page leads with problems, decisions, and tradeoffs instead of screenshots.
+
+| Choice | Why |
 |---|---|
-| **Modern Stack** | Next.js 14 (App Router), TypeScript, Tailwind CSS |
-| **Dynamic Data** | All portfolio content driven from `public/data/portfolio.json` |
-| **Admin Panel** | Browser-based admin at `/admin/` — updates data via GitHub API |
-| **CI/CD** | Auto-deploy to GitHub Pages on every push to `main` |
-| **Static Export** | Pre-rendered static HTML for performance & GitHub Pages compatibility |
-| **Responsive** | Mobile-first design across all sections |
-| **Dark Theme** | Sleek dark color scheme with indigo/teal accents |
+| Sans body (Inter) + mono micro-labels (JetBrains Mono) | Mono carries the metadata — section indices, years, ownership tags, tech chips — so the prose stays clean |
+| Amber accent on near-black, used sparingly | The colour of a warning light, for someone whose pitch is "systems that tell you when they break" |
+| Dark default, light theme toggle | Stored in `localStorage`, applied pre-paint so there's no flash |
+| Ownership + outcome on every entry | `LEAD` / `SOLE` / `SOLO` / `BACKEND`, plus a one-line result — the two things a reviewer actually scans for |
+| Hairline rules, no drop shadows | Structure comes from alignment and rhythm, not decoration |
 
-## 🏗️ Tech Stack
+## Stack
 
-- **Framework**: Next.js 14 (App Router, static export)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React
-- **Animations**: Framer Motion ready
-- **GitHub Integration**: GitHub REST API (admin panel)
-- **Notifications**: React Hot Toast
-- **CI/CD**: GitHub Actions
-- **Hosting**: GitHub Pages
+- **Next.js 15** (App Router, `output: "export"`)
+- **TypeScript**, **Tailwind CSS**
+- **lucide-react** for icons
+- GitHub Actions → GitHub Pages
 
-## 📁 Project Structure
+Zero runtime JS dependencies beyond React: the scroll reveals, scrollspy, and
+theme toggle are ~100 lines of plain browser API.
 
-```
-├── .github/
-│   └── workflows/
-│       └── deploy.yml          # CI/CD: auto-deploy on push to main
-├── src/
-│   ├── app/
-│   │   ├── layout.tsx          # Root layout with metadata
-│   │   ├── page.tsx            # Portfolio home page
-│   │   ├── globals.css         # Global styles
-│   │   └── admin/
-│   │       └── page.tsx        # Admin panel page
-│   ├── components/
-│   │   ├── sections/           # Portfolio sections
-│   │   │   ├── Hero.tsx
-│   │   │   ├── About.tsx
-│   │   │   ├── Skills.tsx
-│   │   │   ├── Experience.tsx
-│   │   │   ├── Projects.tsx
-│   │   │   └── Contact.tsx
-│   │   ├── ui/
-│   │   │   ├── Navbar.tsx
-│   │   │   └── Footer.tsx
-│   │   └── admin/
-│   │       ├── AuthGate.tsx
-│   │       └── AdminDashboard.tsx
-│   ├── lib/
-│   │   ├── utils.ts
-│   │   └── github-api.ts
-│   └── types/
-│       └── portfolio.ts
-├── public/
-│   └── data/
-│       └── portfolio.json      # All portfolio content lives here
-├── docs/
-│   ├── SETUP.md
-│   ├── ADMIN.md
-│   └── DEPLOYMENT.md
-├── next.config.mjs
-├── tailwind.config.ts
-└── package.json
-```
+## Editing content
 
-## 🚀 Quick Start
+Everything on the page — bio, skills, roles, projects, education, contact —
+comes from **`src/data/portfolio.ts`**. Edit it, commit, push:
 
 ```bash
 npm install
-npm run dev
-# Open http://localhost:3000
+npm run dev        # http://localhost:3000
 ```
 
-See [docs/SETUP.md](docs/SETUP.md) for full setup guide.
+| Script | Does |
+|---|---|
+| `npm run dev` | Dev server with hot reload |
+| `npm run build` | Static export to `out/` |
+| `npm run typecheck` | `tsc --noEmit` |
+| `npm run lint` | ESLint |
 
-## 🔧 Updating Portfolio Content
+## Structure
 
-Visit `/admin/` on your live site with a GitHub token. See [docs/ADMIN.md](docs/ADMIN.md).
+```
+src/
+├── app/
+│   ├── layout.tsx        # fonts, metadata, JSON-LD, pre-paint theme script
+│   ├── page.tsx          # section composition
+│   └── globals.css       # design tokens (light + dark), reveal, primitives
+├── components/
+│   ├── sections/         # Hero, About, Skills, Experience, Projects, Education, Contact
+│   └── ui/               # Nav, Section, Reveal, Badge, ThemeToggle, Footer
+├── data/portfolio.ts     # ← all content lives here
+└── lib/utils.ts
+```
 
-## 🚢 Deployment
+## Accessibility & robustness
 
-Automatic via GitHub Actions. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+- Content is visible with JavaScript disabled — the reveal animation's hidden
+  state is gated behind an `html.js` class set by the boot script.
+- `prefers-reduced-motion: reduce` disables reveals entirely rather than leaving
+  content stranded at `opacity: 0`.
+- Both themes define a full palette; neither inherits colours from the other.
+- Semantic landmarks, visible focus rings, `aria-current` on the active nav link.
 
-## 📄 License
+## Deployment
+
+Push to `main`. CI typechecks, lints, builds, and publishes `out/` to GitHub
+Pages. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+
+## License
 
 MIT

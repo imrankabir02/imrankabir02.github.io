@@ -1,62 +1,77 @@
-"use client";
+import { ArrowUpRight, Building2, Github, MapPin } from "lucide-react";
+import Section from "../ui/Section";
+import Reveal from "../ui/Reveal";
+import { MY_DETAILS } from "@/data/portfolio";
 
-import { ContactSection as ContactData } from "@/types/portfolio";
-import { Mail, Send, CheckCircle } from "lucide-react";
+const CHANNELS = [
+  {
+    icon: Github,
+    label: "GitHub",
+    value: MY_DETAILS.github.replace("https://", ""),
+    href: MY_DETAILS.github,
+  },
+  {
+    icon: MapPin,
+    label: "Location",
+    value: MY_DETAILS.address,
+    href: null,
+  },
+  {
+    icon: Building2,
+    label: "Currently",
+    value: `${MY_DETAILS.role} ${MY_DETAILS.company}`,
+    href: MY_DETAILS.companyLink,
+  },
+];
 
-interface ContactProps {
-  data: ContactData;
-}
-
-export default function Contact({ data }: ContactProps) {
+export default function Contact() {
   return (
-    <section id="contact" className="section-padding">
-      <div className="section-container">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <p className="text-indigo-400 text-sm font-mono font-medium mb-2 uppercase tracking-widest">
-            {"// get_in_touch"}
-          </p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white">Contact Me</h2>
-        </div>
+    <Section
+      id="contact"
+      index="06"
+      eyebrow="Contact"
+      title="Happy to walk through any of it"
+      lede="Most of the systems above are private, so the code isn't public — but the architecture, the tradeoffs, and the things that went wrong are all fair game. Email is the fastest way to reach me."
+    >
+      <Reveal>
+        <a
+          href={`mailto:${MY_DETAILS.email}`}
+          className="group inline-flex max-w-full items-center gap-3 break-all text-2xl font-semibold tracking-tightest text-fg transition-colors hover:text-accent sm:text-4xl md:text-5xl"
+        >
+          {MY_DETAILS.email}
+          <ArrowUpRight
+            className="h-6 w-6 shrink-0 text-fg3 transition-all group-hover:-translate-y-1 group-hover:translate-x-1 group-hover:text-accent md:h-8 md:w-8"
+            strokeWidth={1.5}
+          />
+        </a>
+      </Reveal>
 
-        <div className="max-w-2xl mx-auto">
-          <div className="card-glass p-8 text-center">
-            {/* Availability badge */}
-            {data.availableForWork && (
-              <div className="inline-flex items-center gap-2 bg-teal-500/10 border border-teal-500/30 rounded-full px-4 py-1.5 mb-6">
-                <CheckCircle className="w-4 h-4 text-teal-400" />
-                <span className="text-sm text-teal-400 font-medium">
-                  Available for work
-                </span>
-              </div>
-            )}
-
-            {/* Message */}
-            {data.message && (
-              <p className="text-slate-300 text-lg leading-relaxed mb-8">
-                {data.message}
-              </p>
-            )}
-
-            {/* Email CTA */}
-            <a
-              href={`mailto:${data.email}`}
-              className="inline-flex items-center gap-3 bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all duration-200 hover:scale-105 shadow-lg shadow-indigo-500/25 mb-8"
-            >
-              <Mail className="w-5 h-5" />
-              {data.email}
-              <Send className="w-4 h-4" />
-            </a>
-
-            {data.preferredContact && (
-              <p className="text-slate-500 text-sm">
-                Preferred contact:{" "}
-                <span className="text-slate-400 capitalize">{data.preferredContact}</span>
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-    </section>
+      <Reveal delay={0.08}>
+        <dl className="mt-14 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-3">
+          {CHANNELS.map(({ icon: Icon, label, value, href }) => (
+            <div key={label} className="bg-bg px-5 py-6">
+              <dt className="label flex items-center gap-2 text-fg3">
+                <Icon className="h-3.5 w-3.5" strokeWidth={1.6} />
+                {label}
+              </dt>
+              <dd className="mt-3 break-all font-mono text-[0.8125rem] text-fg2">
+                {href ? (
+                  <a
+                    href={href}
+                    target={href.startsWith("http") ? "_blank" : undefined}
+                    rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    className="transition-colors hover:text-accent"
+                  >
+                    {value}
+                  </a>
+                ) : (
+                  value
+                )}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </Reveal>
+    </Section>
   );
 }
