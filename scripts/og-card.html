@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <!-- __SITE_CSS__ is substituted by scripts/generate-og.mjs with the
+         hashed stylesheet from the current build, so the card always uses the
+         same Inter / JetBrains Mono files the site itself ships. -->
+    <link rel="stylesheet" href="__SITE_CSS__" />
+    <style>
+      html, body { margin: 0; padding: 0; }
+      body {
+        width: 1200px; height: 630px; overflow: hidden;
+        background: #0a0b0d; color: #edeef0;
+        font-family: Inter, "Inter Fallback", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .mono { font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace; }
+      .wrap { position: relative; width: 100%; height: 100%; box-sizing: border-box; padding: 68px 72px; display: flex; flex-direction: column; justify-content: space-between; }
+      /* Same engineering-graph grid as the site hero. */
+      .grid {
+        position: absolute; inset: 0;
+        background-image:
+          linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px);
+        background-size: 64px 64px;
+        -webkit-mask-image: radial-gradient(ellipse 85% 75% at 30% 0%, #000 15%, transparent 80%);
+                mask-image: radial-gradient(ellipse 85% 75% at 30% 0%, #000 15%, transparent 80%);
+      }
+      /* Accent rail — echoes the .pull quote bar used across the site. */
+      .rail { position: absolute; left: 0; top: 0; bottom: 0; width: 8px; background: #e9b44c; }
+      .row { position: relative; display: flex; align-items: center; justify-content: space-between; }
+      .label { font-size: 15px; letter-spacing: .18em; text-transform: uppercase; color: #7d848e; }
+      .dot { display: inline-block; width: 9px; height: 9px; border-radius: 999px; background: #4ade80; margin-right: 12px; vertical-align: middle; }
+      h1 { position: relative; margin: 0; font-size: 88px; font-weight: 600; letter-spacing: -.04em; line-height: 1; }
+      .role { position: relative; display: flex; align-items: center; gap: 20px; margin-top: 26px; font-size: 36px; font-weight: 500; color: #e9b44c; letter-spacing: -.02em; }
+      .role span { display: block; height: 2px; width: 90px; background: rgba(233,180,76,.45); }
+      .lead { position: relative; margin: 30px 0 0; max-width: 880px; font-size: 25px; line-height: 1.5; color: #a8aeb8; }
+      .chips { position: relative; display: flex; gap: 10px; }
+      .chip { border: 1px solid rgba(255,255,255,.14); border-radius: 999px; padding: 9px 18px; font-size: 15px; color: #a8aeb8; letter-spacing: -.01em; }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="grid"></div>
+      <div class="rail"></div>
+
+      <div class="row">
+        <div class="label mono"><span class="dot"></span>IT Engineer at BIFPCL</div>
+        <div class="label mono">imrankabir02.github.io</div>
+      </div>
+
+      <div>
+        <h1>Mridha Imran Kabir</h1>
+        <div class="role">Backend Engineer <span></span></div>
+        <p class="lead">
+          Multi-tenant data isolation, background jobs that survive bad input,
+          and queries that stay fast as the data grows.
+        </p>
+      </div>
+
+      <div class="chips mono">
+        <div class="chip">Django</div>
+        <div class="chip">FastAPI</div>
+        <div class="chip">Laravel</div>
+        <div class="chip">PostgreSQL</div>
+        <div class="chip">Celery</div>
+        <div class="chip">Docker</div>
+      </div>
+    </div>
+  </body>
+</html>

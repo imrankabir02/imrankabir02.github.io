@@ -15,7 +15,15 @@ const mono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
-const SITE_URL = "https://testtracker.me";
+const SITE_URL = "https://imrankabir02.github.io";
+// Declared summary_large_image needs a real asset behind it, or every share
+// on LinkedIn/Slack/WhatsApp renders an empty grey box.
+const OG_IMAGE = {
+  url: "/og.png",
+  width: 1200,
+  height: 630,
+  alt: `${MY_DETAILS.name} — ${MY_DETAILS.title}`,
+};
 const DESCRIPTION =
   "Backend engineer working in Django, Laravel, and FastAPI — multi-tenant data isolation, background jobs that survive bad input, query optimisation, and the deployments underneath them.";
 
@@ -47,11 +55,13 @@ export const metadata: Metadata = {
     title: `${MY_DETAILS.name} — ${MY_DETAILS.title}`,
     description: DESCRIPTION,
     locale: "en_US",
+    images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
     title: `${MY_DETAILS.name} — ${MY_DETAILS.title}`,
     description: DESCRIPTION,
+    images: [OG_IMAGE.url],
   },
   robots: { index: true, follow: true },
 };

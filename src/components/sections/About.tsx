@@ -23,7 +23,7 @@ export default function About() {
             {BODY.map((paragraph) => (
               <p
                 key={paragraph.slice(0, 24)}
-                className="text-pretty text-base leading-[1.75] text-fg2 md:text-[1.0625rem]"
+                className="text-pretty text-base text-fg2"
               >
                 {paragraph}
               </p>
@@ -35,7 +35,7 @@ export default function About() {
           <dl className="grid grid-cols-3 gap-px overflow-hidden rounded-2xl border border-line bg-line lg:grid-cols-1">
             {FACTS.map((fact) => (
               <div key={fact.label} className="bg-bg px-5 py-6">
-                <dd className="tnum font-mono text-2xl font-medium tracking-tight text-accent md:text-3xl">
+                <dd className="tnum font-mono text-metric font-medium text-accent">
                   {fact.value}
                 </dd>
                 <dt className="label mt-2 text-fg3">{fact.label}</dt>

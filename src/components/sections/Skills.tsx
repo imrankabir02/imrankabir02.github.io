@@ -21,7 +21,7 @@ export default function Skills() {
               <span className="label tnum text-fg3 transition-colors group-hover:text-accent">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <span className="text-[0.95rem] text-fg2 transition-colors group-hover:text-fg">
+              <span className="text-base text-fg2 transition-colors group-hover:text-fg">
                 {skill}
               </span>
             </li>
@@ -29,7 +29,7 @@ export default function Skills() {
         </ul>
       </Reveal>
 
-      <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
         {SKILL_GROUPS.map((group, i) => (
           <Reveal key={group.heading} delay={i * 0.06}>
             <h3 className="label text-fg3">{group.heading}</h3>

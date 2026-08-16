@@ -13,12 +13,10 @@ function ProjectCard({
   featured: boolean;
 }) {
   return (
-    <article
-      className={cn(
-        "group flex h-full flex-col rounded-2xl border border-line bg-elev/40 p-6 transition-colors duration-300 hover:border-line-strong md:p-7",
-      )}
-    >
-      <div className="flex items-start justify-between gap-6">
+    <article className="card group flex h-full flex-col p-6 hover:border-line-strong md:p-7">
+      {/* Fixed height so a card with a metric and one without still align
+          their titles when they sit side by side in a row. */}
+      <div className="flex min-h-[3rem] items-start justify-between gap-6">
         <div className="flex flex-wrap items-center gap-3">
           <OwnershipBadge ownership={project.ownership} />
           <StatusBadge status={project.status} />
@@ -38,28 +36,23 @@ function ProjectCard({
         <div>
           <h3
             className={cn(
-              "mt-5 font-semibold tracking-tight text-fg",
-              featured ? "text-2xl md:text-[1.75rem]" : "text-xl",
+              "mt-6 font-semibold text-fg",
+              featured ? "text-h3lg" : "text-h3",
             )}
           >
             {project.title}
           </h3>
 
-          <p className="mt-2 font-mono text-xs leading-relaxed text-fg3">
+          <p className="mt-2 font-mono text-xs text-fg3">
             {project.org ? `${project.org} · ` : ""}
             {project.context}
           </p>
 
-          <p
-            className={cn(
-              "mt-5 border-l-2 border-accent/50 pl-4 leading-relaxed text-fg",
-              featured ? "text-base md:text-lg" : "text-[0.95rem]",
-            )}
-          >
+          <p className={cn("pull mt-6", featured ? "text-lg" : "text-base")}>
             {project.outcome}
           </p>
 
-          <p className="mt-5 max-w-2xl text-pretty text-[0.9375rem] leading-relaxed text-fg2">
+          <p className="mt-6 max-w-2xl text-pretty text-sm text-fg2">
             {project.description}
           </p>
         </div>
@@ -67,18 +60,15 @@ function ProjectCard({
         {project.highlights?.length ? (
           <ul
             className={cn(
-              "mt-5 space-y-2.5",
-              featured && "lg:mt-5 lg:self-center lg:border-l lg:border-line lg:pl-10",
+              "mt-6 space-y-3",
+              featured && "lg:self-center lg:border-l lg:border-line lg:pl-10",
             )}
           >
             {project.highlights.map((highlight) => (
-              <li
-                key={highlight}
-                className="flex gap-3 text-[0.875rem] leading-relaxed text-fg2"
-              >
+              <li key={highlight} className="flex gap-3 text-sm text-fg2">
                 <span
                   aria-hidden
-                  className="mt-[0.4rem] h-1 w-1 shrink-0 rounded-full bg-accent"
+                  className="mt-[0.55rem] h-1 w-1 shrink-0 rounded-full bg-accent"
                 />
                 <span>{highlight}</span>
               </li>
@@ -88,7 +78,7 @@ function ProjectCard({
       </div>
 
       {/* Footer is pushed to the bottom so cards in a row line up. */}
-      <div className="mt-auto pt-7">
+      <div className="mt-auto pt-8">
         <ul className="flex flex-wrap gap-2">
           {project.technologies.map((tech) => (
             <li key={tech} className="chip">
@@ -98,7 +88,7 @@ function ProjectCard({
         </ul>
 
         {project.appLink || project.note ? (
-          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-line pt-5">
+          <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-line pt-5">
             {project.appLink ? (
               <a
                 href={project.appLink}
@@ -114,7 +104,7 @@ function ProjectCard({
               </a>
             ) : null}
             {project.note ? (
-              <p className="inline-flex items-start gap-2 font-mono text-[0.6875rem] leading-relaxed text-fg3">
+              <p className="inline-flex items-start gap-2 font-mono text-label leading-relaxed text-fg3">
                 <Lock className="mt-0.5 h-3 w-3 shrink-0" strokeWidth={1.8} />
                 {project.note}
               </p>

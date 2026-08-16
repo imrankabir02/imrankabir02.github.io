@@ -46,7 +46,7 @@ export function Metric({
 }) {
   return (
     <div className="text-right">
-      <div className="tnum font-mono text-2xl font-medium leading-none tracking-tight text-fg md:text-[1.75rem]">
+      <div className="tnum font-mono text-metric font-medium text-fg">
         {value}
       </div>
       <div className="label mt-1.5 text-fg3">{label}</div>

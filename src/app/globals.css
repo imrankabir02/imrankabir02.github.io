@@ -6,35 +6,44 @@
    Design tokens. Dark is the default; light is opt-in via the
    toggle, which stamps data-theme on <html>. Both are defined in
    full so neither borrows colours from the other.
+
+   Every foreground token clears 4.5:1 against its own --bg at the
+   sizes it is actually used, --fg-3 included: it carries small mono
+   captions, so it cannot be a decorative grey.
    --------------------------------------------------------------- */
 :root,
 [data-theme="dark"] {
   color-scheme: dark;
-  --bg: #0a0b0d;
-  --elev: #101216;
-  --line: rgba(255, 255, 255, 0.09);
-  --line-strong: rgba(255, 255, 255, 0.18);
-  --fg: #edeef0;
-  --fg-2: #a4aab4;
-  --fg-3: #6e757f;
-  --accent: #e9b44c;
-  --accent-soft: rgba(233, 180, 76, 0.13);
-  --ok: #4ade80;
+  /* Solid colours are stored as RGB channels so Tailwind can compute
+     opacity modifiers (bg-elev/40, border-accent/60) against them. A bare
+     hex in a var silently emits no CSS for those utilities. */
+  --bg: 10 11 13;
+  --elev: 17 19 23;
+  --fg: 237 238 240;
+  --fg-2: 168 174 184;
+  --fg-3: 125 132 142; /* 5.6:1 on --bg */
+  --accent: 233 180 76;
+  --ok: 74 222 128;
+
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.2);
+  --accent-soft: rgba(233, 180, 76, 0.12);
   --grid: rgba(255, 255, 255, 0.045);
 }
 
 [data-theme="light"] {
   color-scheme: light;
-  --bg: #fbfaf8;
-  --elev: #ffffff;
+  --bg: 251 250 248;
+  --elev: 255 255 255;
+  --fg: 20 22 26;
+  --fg-2: 74 81 91;
+  --fg-3: 107 114 124; /* 4.9:1 on --bg — was 4.0:1 */
+  --accent: 138 90 11;
+  --ok: 21 127 61;
+
   --line: rgba(18, 20, 24, 0.11);
-  --line-strong: rgba(18, 20, 24, 0.24);
-  --fg: #14161a;
-  --fg-2: #4c535d;
-  --fg-3: #79818c;
-  --accent: #8a5a0b;
+  --line-strong: rgba(18, 20, 24, 0.26);
   --accent-soft: rgba(138, 90, 11, 0.09);
-  --ok: #157f3d;
   --grid: rgba(18, 20, 24, 0.05);
 }
 
@@ -46,15 +55,15 @@ html {
 }
 
 body {
-  background: var(--bg);
-  color: var(--fg);
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
   font-feature-settings: "kern", "liga", "calt";
   text-rendering: optimizeLegibility;
 }
 
 ::selection {
-  background: var(--accent);
-  color: var(--bg);
+  background: rgb(var(--accent));
+  color: rgb(var(--bg));
 }
 
 ::-webkit-scrollbar {
@@ -62,16 +71,16 @@ body {
   height: 10px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg);
+  background: rgb(var(--bg));
 }
 ::-webkit-scrollbar-thumb {
   background: var(--line-strong);
-  border: 3px solid var(--bg);
+  border: 3px solid rgb(var(--bg));
   border-radius: 999px;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid rgb(var(--accent));
   outline-offset: 3px;
   border-radius: 2px;
 }
@@ -81,10 +90,10 @@ body {
     @apply mx-auto w-full max-w-shell px-5 sm:px-8 lg:px-10;
   }
 
-  /* Small uppercase mono label — used for section numbers, badges,
-     field names. The workhorse of the whole layout. */
+  /* Small uppercase mono label — section numbers, badges, field names.
+     The workhorse of the whole layout. */
   .label {
-    @apply font-mono text-[0.6875rem] uppercase tracking-[0.18em];
+    @apply font-mono text-label uppercase;
   }
 
   .rule {
@@ -93,13 +102,22 @@ body {
 
   .chip {
     @apply inline-flex items-center rounded-full border border-line px-2.5 py-1
-           font-mono text-[0.6875rem] tracking-tight text-fg2
+           font-mono text-label tracking-tight text-fg3
            transition-colors duration-200;
   }
 
   .chip-hover:hover .chip,
   .chip:hover {
-    @apply border-line-strong text-fg;
+    @apply border-line-strong text-fg2;
+  }
+
+  /* The one-line claim that leads an experience row or project card. */
+  .pull {
+    @apply border-l-2 border-accent/60 pl-4 text-pretty text-fg;
+  }
+
+  .card {
+    @apply rounded-2xl border border-line bg-elev/40 transition-colors duration-300;
   }
 
   .link-underline {
@@ -172,13 +190,29 @@ body {
   }
 }
 
-/* Printing a portfolio is a real thing recruiters do. */
+/* Printing a portfolio is a real thing recruiters do. Collapse the dark
+   theme, drop decoration, and stop cards breaking across pages. */
 @media print {
   [data-print-hide] {
     display: none !important;
   }
+  html,
   body {
-    background: #fff;
-    color: #000;
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .bg-grid {
+    display: none !important;
+  }
+  .card,
+  article {
+    break-inside: avoid;
+    border-color: #ccc !important;
+    background: #fff !important;
+  }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.7em;
+    color: #555;
   }
 }

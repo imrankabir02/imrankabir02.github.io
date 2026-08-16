@@ -21,7 +21,7 @@ export default function Hero() {
     <section id="top" className="relative overflow-hidden">
       <div aria-hidden className="pointer-events-none absolute inset-0 bg-grid" />
 
-      <div className="shell relative pb-20 pt-16 md:pb-28 md:pt-24">
+      <div className="shell relative pb-section pt-16 md:pt-24">
         <div className="grid items-start gap-14 lg:grid-cols-[1.4fr_1fr] lg:gap-20">
           <div>
             <Reveal>
@@ -45,15 +45,21 @@ export default function Hero() {
               </a>
             </Reveal>
 
+            {/* Name and discipline read as one unit: the name carries the
+                display weight, the discipline sits directly under it in
+                accent so a scanner gets both in a single fixation. */}
             <Reveal delay={0.05}>
-              <h1 className="mt-8 text-balance text-4xl font-semibold leading-[1.05] tracking-tightest sm:text-5xl md:text-6xl">
+              <h1 className="mt-8 text-balance text-h1 font-semibold">
                 {MY_DETAILS.name}
               </h1>
-              <p className="label mt-4 text-accent">{MY_DETAILS.title}</p>
+              <p className="mt-4 flex items-center gap-3 text-xl font-medium text-accent">
+                {MY_DETAILS.title}
+                <span aria-hidden className="rule w-10 shrink-0 bg-accent/40" />
+              </p>
             </Reveal>
 
             <Reveal delay={0.1}>
-              <p className="mt-8 max-w-xl text-pretty text-lg leading-relaxed text-fg2 md:text-xl">
+              <p className="mt-8 max-w-xl text-pretty text-lg text-fg2">
                 {ABOUT_LEAD}
               </p>
             </Reveal>
@@ -93,7 +99,7 @@ export default function Hero() {
           </div>
 
           <Reveal delay={0.12} className="lg:pt-4">
-            <dl className="overflow-hidden rounded-2xl border border-line bg-elev/40">
+            <dl className="card overflow-hidden">
               {SPEC.map((row, i) => (
                 <div
                   key={row.k}
@@ -102,9 +108,7 @@ export default function Hero() {
                   }`}
                 >
                   <dt className="label w-20 shrink-0 text-fg3">{row.k}</dt>
-                  <dd className="font-mono text-[0.8125rem] leading-relaxed text-fg2">
-                    {row.v}
-                  </dd>
+                  <dd className="font-mono text-xs text-fg2">{row.v}</dd>
                 </div>
               ))}
             </dl>

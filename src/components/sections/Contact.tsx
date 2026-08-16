@@ -36,7 +36,7 @@ export default function Contact() {
       <Reveal>
         <a
           href={`mailto:${MY_DETAILS.email}`}
-          className="group inline-flex max-w-full items-center gap-3 break-all text-2xl font-semibold tracking-tightest text-fg transition-colors hover:text-accent sm:text-4xl md:text-5xl"
+          className="group inline-flex max-w-full items-center gap-3 break-all text-h2 font-semibold text-fg transition-colors hover:text-accent"
         >
           {MY_DETAILS.email}
           <ArrowUpRight
@@ -54,7 +54,7 @@ export default function Contact() {
                 <Icon className="h-3.5 w-3.5" strokeWidth={1.6} />
                 {label}
               </dt>
-              <dd className="mt-3 break-all font-mono text-[0.8125rem] text-fg2">
+              <dd className="mt-3 break-all font-mono text-xs text-fg2">
                 {href ? (
                   <a
                     href={href}

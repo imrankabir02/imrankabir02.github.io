@@ -21,7 +21,7 @@ export default function Section({
   children: ReactNode;
 }) {
   return (
-    <section id={id} className="scroll-mt-24 py-20 md:py-28">
+    <section id={id} className="scroll-mt-24 py-section">
       <div className="shell">
         <Reveal>
           <div className="flex items-center gap-4">
@@ -30,18 +30,18 @@ export default function Section({
             <span className="rule flex-1" />
           </div>
 
-          <h2 className="mt-7 max-w-3xl text-balance text-2xl font-semibold tracking-tightest sm:text-3xl md:text-[2.25rem] md:leading-[1.15]">
+          <h2 className="mt-8 max-w-3xl text-balance text-h2 font-semibold">
             {title}
           </h2>
 
           {lede ? (
-            <p className="mt-4 max-w-prose2 text-pretty text-[0.95rem] leading-relaxed text-fg2">
+            <p className="mt-5 max-w-prose2 text-pretty text-base text-fg2">
               {lede}
             </p>
           ) : null}
         </Reveal>
 
-        <div className="mt-12 md:mt-14">{children}</div>
+        <div className="mt-14">{children}</div>
       </div>
     </section>
   );
