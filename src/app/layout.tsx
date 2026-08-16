@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Newsreader } from "next/font/google";
 import "./globals.css";
 import { MY_DETAILS } from "@/data/portfolio";
 
@@ -13,6 +13,14 @@ const mono = JetBrains_Mono({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-mono",
+});
+
+// Display face. Italic is load-bearing: decks and pull quotes use it.
+const serif = Newsreader({
+  subsets: ["latin"],
+  display: "swap",
+  style: ["normal", "italic"],
+  variable: "--font-serif",
 });
 
 const SITE_URL = "https://imrankabir02.github.io";
@@ -66,8 +74,9 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-// Runs before paint so the stored theme is applied without a flash.
-const BOOT = `(function(){document.documentElement.classList.add("js");try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","dark");}})();`;
+// Runs before paint so the stored theme applies without a flash. Paper-light
+// is the default; dark only for visitors who ask for it (stored or OS-level).
+const BOOT = `(function(){document.documentElement.classList.add("js");try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark"){t=window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";}document.documentElement.setAttribute("data-theme",t);}catch(e){document.documentElement.setAttribute("data-theme","light");}})();`;
 
 const JSON_LD = {
   "@context": "https://schema.org",
@@ -84,8 +93,8 @@ const JSON_LD = {
 
 export const viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0a0b0d" },
-    { media: "(prefers-color-scheme: light)", color: "#fbfaf8" },
+    { media: "(prefers-color-scheme: dark)", color: "#0c0e12" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f6f3" },
   ],
 };
 
@@ -93,7 +102,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: BOOT }} />
         <script
@@ -102,7 +111,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${sans.variable} ${mono.variable} bg-bg font-sans text-fg antialiased`}
+        className={`${sans.variable} ${serif.variable} ${mono.variable} bg-bg font-sans text-fg antialiased`}
       >
         {children}
       </body>

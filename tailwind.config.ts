@@ -1,10 +1,10 @@
 import type { Config } from "tailwindcss";
 
 /**
- * Type scale is deliberately small and fluid. Six near-identical body sizes
- * read as noise, so there are exactly three: `sm` for meta, `base` for body,
- * `lg` for leads. Display sizes scale with the viewport via clamp() so there
- * is no size jump at a breakpoint.
+ * Type system: Newsreader for display and decks, Inter for body, JetBrains
+ * Mono for data. Three body sizes only (sm/base/lg); display sizes are fluid
+ * clamp()s so nothing jumps at a breakpoint. Serif display wants far less
+ * negative tracking than a grotesk — that's why h1/h2 carry their own.
  */
 const config: Config = {
   darkMode: ["class", '[data-theme="dark"]'],
@@ -31,34 +31,35 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
       fontSize: {
         // Mono labels — the smallest type on the site.
-        label: ["0.6875rem", { lineHeight: "1", letterSpacing: "0.16em" }],
-        // Meta: timestamps, contexts, chips, captions.
-        xs: ["0.75rem", { lineHeight: "1.5" }],
+        label: ["0.6875rem", { lineHeight: "1.4", letterSpacing: "0.16em" }],
+        // Meta: timestamps, contexts, tech lines, captions.
+        xs: ["0.75rem", { lineHeight: "1.6" }],
         sm: ["0.875rem", { lineHeight: "1.6" }],
         // Body.
         base: ["1rem", { lineHeight: "1.7" }],
-        // Leads and pull quotes.
-        lg: ["1.125rem", { lineHeight: "1.65" }],
-        xl: ["1.25rem", { lineHeight: "1.55" }],
-        // Card and row headings.
-        h3: ["1.25rem", { lineHeight: "1.3", letterSpacing: "-0.02em" }],
-        h3lg: [
-          "clamp(1.375rem, 1.22rem + 0.7vw, 1.75rem)",
-          { lineHeight: "1.25", letterSpacing: "-0.025em" },
+        // Pull quotes and leads.
+        lg: ["1.125rem", { lineHeight: "1.6" }],
+        // The serif standfirst under the masthead name.
+        deck: [
+          "clamp(1.25rem, 1.1rem + 0.75vw, 1.625rem)",
+          { lineHeight: "1.5" },
         ],
-        // Section headings.
+        // Card and row headings (serif).
+        h3: ["1.5rem", { lineHeight: "1.25", letterSpacing: "-0.01em" }],
+        // Section headings (serif).
         h2: [
-          "clamp(1.75rem, 1.35rem + 1.85vw, 2.625rem)",
-          { lineHeight: "1.15", letterSpacing: "-0.03em" },
+          "clamp(1.875rem, 1.5rem + 1.8vw, 2.75rem)",
+          { lineHeight: "1.1", letterSpacing: "-0.015em" },
         ],
-        // Hero.
+        // Masthead name (serif).
         h1: [
-          "clamp(2.5rem, 1.6rem + 4.1vw, 4.5rem)",
-          { lineHeight: "1.02", letterSpacing: "-0.04em" },
+          "clamp(3rem, 2rem + 5vw, 5.5rem)",
+          { lineHeight: "1.02", letterSpacing: "-0.02em" },
         ],
         // Big numerals (metrics).
         metric: ["1.75rem", { lineHeight: "1", letterSpacing: "-0.03em" }],
@@ -67,11 +68,8 @@ const config: Config = {
         shell: "72rem",
         prose2: "38rem",
       },
-      letterSpacing: {
-        tightest: "-0.035em",
-      },
       spacing: {
-        // Vertical rhythm steps, used for section padding and stack gaps.
+        // Vertical rhythm step for section padding.
         section: "clamp(4.5rem, 3rem + 6vw, 8rem)",
       },
     },

@@ -21,7 +21,7 @@ export default function Experience() {
           const href = COMPANY_LINKS[job.company];
           return (
             <Reveal key={`${job.company}-${job.year}`} delay={i * 0.05}>
-              <article className="group grid gap-6 border-b border-line py-10 transition-colors hover:bg-elev/40 md:grid-cols-[15rem_1fr] md:gap-10 md:px-4">
+              <article className="group grid gap-6 border-b border-line py-10 transition-colors hover:bg-elev/60 md:grid-cols-[15rem_1fr] md:gap-10 md:px-4">
                 <div className="flex items-start justify-between gap-4 md:block">
                   <div>
                     <p className="label text-fg3">{job.year}</p>
@@ -42,7 +42,7 @@ export default function Experience() {
                 </div>
 
                 <div>
-                  <h3 className="text-h3 font-semibold text-fg">
+                  <h3 className="font-serif text-h3 font-medium text-fg">
                     {job.role}
                     <span className="mx-2 text-fg3">·</span>
                     {href ? (
@@ -59,21 +59,15 @@ export default function Experience() {
                     )}
                   </h3>
 
-                  <p className="pull mt-5 text-base">
-                    {job.outcome}
-                  </p>
+                  <p className="pull mt-5 text-lg">{job.outcome}</p>
 
                   <p className="mt-5 max-w-2xl text-pretty text-sm text-fg2">
                     {job.description}
                   </p>
 
-                  <ul className="mt-6 flex flex-wrap gap-2">
-                    {job.technologies.map((tech) => (
-                      <li key={tech} className="chip">
-                        {tech}
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="dataline mt-6">
+                    {job.technologies.join(" · ")}
+                  </p>
                 </div>
               </article>
             </Reveal>

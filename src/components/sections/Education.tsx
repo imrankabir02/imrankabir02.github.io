@@ -9,12 +9,12 @@ export default function Education() {
         {EDUCATIONS.map((item, i) => (
           <Reveal key={item.title} delay={i * 0.05}>
             <article className="grid gap-3 border-b border-line py-8 md:grid-cols-[15rem_1fr] md:gap-10 md:px-4">
-              <p className="label text-fg3">{item.year}</p>
+              <p className="label pt-1 text-fg3">{item.year}</p>
               <div>
-                <h3 className="text-h3 font-semibold text-fg">
+                <h3 className="font-serif text-h3 font-medium text-fg">
                   {item.title}
                 </h3>
-                <p className="mt-2.5 font-mono text-xs text-fg3">
+                <p className="dataline mt-2.5">
                   {item.name} · {item.location}
                 </p>
               </div>

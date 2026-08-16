@@ -9,10 +9,8 @@ export function OwnershipBadge({ ownership }: { ownership: string }) {
   return (
     <span
       className={cn(
-        "label inline-flex items-center rounded px-1.5 py-1",
-        strong
-          ? "bg-accent-soft text-accent"
-          : "border border-line text-fg3",
+        "label inline-flex items-center px-2 py-1",
+        strong ? "bg-accent-soft text-accent" : "border border-line text-fg3",
       )}
     >
       {ownership}
@@ -27,25 +25,16 @@ export function StatusBadge({ status }: { status: string }) {
   return (
     <span className="label inline-flex items-center gap-1.5 text-fg3">
       <span
-        className={cn(
-          "h-1.5 w-1.5 rounded-full",
-          live ? "bg-ok" : "bg-fg3",
-        )}
+        className={cn("h-1.5 w-1.5 rounded-full", live ? "bg-ok" : "bg-fg3")}
       />
       {status}
     </span>
   );
 }
 
-export function Metric({
-  value,
-  label,
-}: {
-  value: string;
-  label: string;
-}) {
+export function Metric({ value, label }: { value: string; label: string }) {
   return (
-    <div className="text-right">
+    <div>
       <div className="tnum font-mono text-metric font-medium text-fg">
         {value}
       </div>

@@ -8,7 +8,7 @@ export default function Footer() {
           © {new Date().getFullYear()} {MY_DETAILS.name} · {MY_DETAILS.address}
         </p>
         <p className="font-mono text-label tracking-tight text-fg3">
-          Next.js · Tailwind · static export, deployed on push
+          Set in Newsreader, Inter & JetBrains Mono · static export
         </p>
       </div>
     </footer>

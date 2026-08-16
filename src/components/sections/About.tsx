@@ -2,7 +2,7 @@ import Section from "../ui/Section";
 import Reveal from "../ui/Reveal";
 import { ABOUT_TEXT, EXPERIENCES, PROJECTS } from "@/data/portfolio";
 
-// The hero already carries paragraph one; About picks up from paragraph two.
+// The masthead already carries paragraph one; About picks up from paragraph two.
 const BODY = ABOUT_TEXT.split(/\n\s*\n/)
   .slice(1)
   .map((p) => p.trim())
@@ -32,13 +32,16 @@ export default function About() {
         </Reveal>
 
         <Reveal delay={0.08} className="lg:self-start">
-          <dl className="grid grid-cols-3 gap-px overflow-hidden rounded-2xl border border-line bg-line lg:grid-cols-1">
+          <dl className="border-t border-line">
             {FACTS.map((fact) => (
-              <div key={fact.label} className="bg-bg px-5 py-6">
+              <div
+                key={fact.label}
+                className="flex items-baseline justify-between border-b border-line py-5"
+              >
+                <dt className="label text-fg3">{fact.label}</dt>
                 <dd className="tnum font-mono text-metric font-medium text-accent">
                   {fact.value}
                 </dd>
-                <dt className="label mt-2 text-fg3">{fact.label}</dt>
               </div>
             ))}
           </dl>

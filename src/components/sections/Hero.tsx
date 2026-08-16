@@ -1,12 +1,13 @@
-import { ArrowUpRight, Mail, MapPin } from "lucide-react";
+import { ArrowUpRight, Mail } from "lucide-react";
 import Reveal from "../ui/Reveal";
 import { ABOUT_TEXT, MY_DETAILS } from "@/data/portfolio";
+import { cn } from "@/lib/utils";
 
-// First paragraph of the bio doubles as the hero lead; the rest lives in About,
-// so nothing is said twice.
+// First paragraph of the bio doubles as the masthead deck; the rest lives in
+// About, so nothing is said twice.
 const ABOUT_LEAD = ABOUT_TEXT.split(/\n\s*\n/)[0].trim();
 
-// A spec sheet reads better than a stock photo for someone whose work is
+// A data strip reads better than a stock photo for someone whose work is
 // invisible by nature — it front-loads the facts a reviewer scans for.
 const SPEC = [
   { k: "Focus", v: "Backend systems, end to end" },
@@ -16,104 +17,88 @@ const SPEC = [
   { k: "Based", v: MY_DETAILS.address },
 ];
 
+/**
+ * Newspaper-masthead hero: a mono meta rule, the name set enormous in serif,
+ * an italic standfirst, then a ruled data strip across the full measure.
+ */
 export default function Hero() {
   return (
     <section id="top" className="relative overflow-hidden">
       <div aria-hidden className="pointer-events-none absolute inset-0 bg-grid" />
 
-      <div className="shell relative pb-section pt-16 md:pt-24">
-        <div className="grid items-start gap-14 lg:grid-cols-[1.4fr_1fr] lg:gap-20">
-          <div>
-            <Reveal>
-              <a
-                href={MY_DETAILS.companyLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 transition-colors hover:border-line-strong"
-              >
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ok opacity-70" />
-                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-ok" />
-                </span>
-                <span className="label text-fg2">
-                  {MY_DETAILS.role} {MY_DETAILS.company}
-                </span>
-                <ArrowUpRight
-                  className="h-3 w-3 text-fg3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                  strokeWidth={2}
-                />
-              </a>
-            </Reveal>
-
-            {/* Name and discipline read as one unit: the name carries the
-                display weight, the discipline sits directly under it in
-                accent so a scanner gets both in a single fixation. */}
-            <Reveal delay={0.05}>
-              <h1 className="mt-8 text-balance text-h1 font-semibold">
-                {MY_DETAILS.name}
-              </h1>
-              <p className="mt-4 flex items-center gap-3 text-xl font-medium text-accent">
-                {MY_DETAILS.title}
-                <span aria-hidden className="rule w-10 shrink-0 bg-accent/40" />
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.1}>
-              <p className="mt-8 max-w-xl text-pretty text-lg text-fg2">
-                {ABOUT_LEAD}
-              </p>
-            </Reveal>
-
-            <Reveal delay={0.15}>
-              <div className="mt-10 flex flex-wrap items-center gap-3">
-                <a
-                  href="#work"
-                  className="inline-flex items-center gap-2 rounded-full bg-fg px-5 py-2.5 text-sm font-medium text-bg transition-opacity hover:opacity-90"
-                >
-                  See the work
-                </a>
-                <a
-                  href={`mailto:${MY_DETAILS.email}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:border-line-strong"
-                >
-                  <Mail className="h-4 w-4" strokeWidth={1.6} />
-                  Get in touch
-                </a>
-              </div>
-            </Reveal>
-
-            <Reveal delay={0.2}>
-              <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-xs text-fg3">
-                <span className="inline-flex items-center gap-1.5">
-                  <MapPin className="h-3.5 w-3.5" strokeWidth={1.6} />
-                  {MY_DETAILS.address}
-                </span>
-                <a
-                  href={`mailto:${MY_DETAILS.email}`}
-                  className="transition-colors hover:text-accent"
-                >
-                  {MY_DETAILS.email}
-                </a>
-              </div>
-            </Reveal>
+      <div className="shell relative pb-section pt-10 md:pt-14">
+        <Reveal>
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-line pb-4">
+            <p className="label text-fg3">
+              {MY_DETAILS.title} · {MY_DETAILS.address}
+            </p>
+            <a
+              href={MY_DETAILS.companyLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-2 border border-line px-3 py-1.5 transition-colors hover:border-line-strong"
+            >
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ok opacity-70" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-ok" />
+              </span>
+              <span className="label text-fg2">
+                {MY_DETAILS.role} {MY_DETAILS.company}
+              </span>
+              <ArrowUpRight
+                className="h-3 w-3 text-fg3 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                strokeWidth={2}
+              />
+            </a>
           </div>
+        </Reveal>
 
-          <Reveal delay={0.12} className="lg:pt-4">
-            <dl className="card overflow-hidden">
-              {SPEC.map((row, i) => (
-                <div
-                  key={row.k}
-                  className={`flex items-baseline gap-4 px-5 py-4 ${
-                    i > 0 ? "border-t border-line" : ""
-                  }`}
-                >
-                  <dt className="label w-20 shrink-0 text-fg3">{row.k}</dt>
-                  <dd className="font-mono text-xs text-fg2">{row.v}</dd>
-                </div>
-              ))}
-            </dl>
-          </Reveal>
-        </div>
+        <Reveal delay={0.05}>
+          <h1 className="mt-12 text-balance font-serif text-h1 font-medium text-fg">
+            {MY_DETAILS.name}
+          </h1>
+          <div aria-hidden className="mt-8 h-[3px] w-20 bg-accent" />
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <p className="mt-8 max-w-3xl text-pretty font-serif text-deck italic text-fg2">
+            {ABOUT_LEAD}
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.15}>
+          <div className="mt-10 flex flex-wrap items-center gap-3">
+            <a href="#work" className="btn-primary">
+              See the work
+              <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={2} />
+            </a>
+            <a href={`mailto:${MY_DETAILS.email}`} className="btn-ghost">
+              <Mail className="h-3.5 w-3.5" strokeWidth={1.6} />
+              {MY_DETAILS.email}
+            </a>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.2}>
+          <dl className="mt-14 grid border-y border-line sm:grid-cols-2 lg:grid-cols-5">
+            {SPEC.map((row, i) => (
+              <div
+                key={row.k}
+                className={cn(
+                  "py-4 lg:px-6",
+                  // Hairlines between cells: rows stack below lg, columns at lg.
+                  i > 0 && "border-t border-line sm:border-t",
+                  i < 2 && "sm:border-t-0",
+                  "lg:border-t-0 lg:border-l lg:border-line",
+                  i === 0 && "lg:border-l-0 lg:pl-0",
+                )}
+              >
+                <dt className="label text-fg3">{row.k}</dt>
+                <dd className="mt-2 font-mono text-xs text-fg2">{row.v}</dd>
+              </div>
+            ))}
+          </dl>
+        </Reveal>
       </div>
     </section>
   );

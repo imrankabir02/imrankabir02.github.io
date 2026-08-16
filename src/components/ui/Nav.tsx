@@ -57,27 +57,29 @@ export default function Nav() {
     <header
       data-print-hide
       className={`sticky top-0 z-50 transition-colors duration-300 ${
-        scrolled ? "border-b border-line bg-bg/80 backdrop-blur-xl" : "border-b border-transparent"
+        scrolled
+          ? "border-b border-line bg-bg/85 backdrop-blur-xl"
+          : "border-b border-transparent"
       }`}
     >
       <nav className="shell flex h-16 items-center justify-between gap-6">
         <a
           href="#top"
-          className="font-mono text-sm tracking-tight text-fg transition-colors hover:text-accent"
+          className="font-serif text-xl font-medium tracking-tight text-fg transition-colors hover:text-accent"
         >
-          imran<span className="text-accent">.</span>kabir
+          Imran Kabir<span className="text-accent">.</span>
         </a>
 
-        <ul className="hidden items-center gap-1 md:flex">
+        <ul className="hidden items-center gap-6 md:flex">
           {LINKS.map((link) => (
             <li key={link.id}>
               <a
                 href={`#${link.id}`}
                 aria-current={active === link.id ? "true" : undefined}
-                className={`label rounded-full px-3 py-1.5 transition-colors ${
+                className={`label inline-block border-b-2 pb-1 pt-1.5 transition-colors ${
                   active === link.id
-                    ? "bg-accent-soft text-accent"
-                    : "text-fg3 hover:text-fg"
+                    ? "border-accent text-fg"
+                    : "border-transparent text-fg3 hover:text-fg"
                 }`}
               >
                 {link.label}
@@ -93,7 +95,7 @@ export default function Nav() {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            className="grid h-9 w-9 place-items-center rounded-full border border-line text-fg2 transition-colors hover:border-line-strong hover:text-fg md:hidden"
+            className="grid h-9 w-9 place-items-center border border-line text-fg2 transition-colors hover:border-line-strong hover:text-fg md:hidden"
           >
             {open ? (
               <X className="h-4 w-4" strokeWidth={1.6} />

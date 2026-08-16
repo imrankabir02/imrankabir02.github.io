@@ -3,7 +3,8 @@ import Reveal from "./Reveal";
 
 /**
  * Every section shares the same head: a mono index rail, the section name,
- * a hairline out to the margin, then a display heading and optional lede.
+ * a hairline out to the margin, then a serif display heading and optional
+ * lede — the rhythm of a well-set technical document.
  */
 export default function Section({
   id,
@@ -30,7 +31,7 @@ export default function Section({
             <span className="rule flex-1" />
           </div>
 
-          <h2 className="mt-8 max-w-3xl text-balance text-h2 font-semibold">
+          <h2 className="mt-8 max-w-3xl text-balance font-serif text-h2 font-medium">
             {title}
           </h2>
 

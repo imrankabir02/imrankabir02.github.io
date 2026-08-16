@@ -75,7 +75,7 @@ function screenshot(bin, url, dest) {
       "--no-sandbox",
       "--hide-scrollbars",
       "--window-size=1200,630",
-      "--default-background-color=0a0b0dff",
+      "--default-background-color=f7f6f3ff",
       `--screenshot=${dest}`,
       url,
     ]);

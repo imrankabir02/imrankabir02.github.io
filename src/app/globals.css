@@ -3,48 +3,49 @@
 @tailwind utilities;
 
 /* ---------------------------------------------------------------
-   Design tokens. Dark is the default; light is opt-in via the
+   Design tokens. Paper-light is the default; dark is opt-in via the
    toggle, which stamps data-theme on <html>. Both are defined in
    full so neither borrows colours from the other.
+
+   Solid colours are stored as RGB channels so Tailwind can compute
+   opacity modifiers (bg-bg/85, border-accent/60) against them — a
+   bare hex in a var silently emits no CSS for those utilities.
 
    Every foreground token clears 4.5:1 against its own --bg at the
    sizes it is actually used, --fg-3 included: it carries small mono
    captions, so it cannot be a decorative grey.
    --------------------------------------------------------------- */
 :root,
-[data-theme="dark"] {
-  color-scheme: dark;
-  /* Solid colours are stored as RGB channels so Tailwind can compute
-     opacity modifiers (bg-elev/40, border-accent/60) against them. A bare
-     hex in a var silently emits no CSS for those utilities. */
-  --bg: 10 11 13;
-  --elev: 17 19 23;
-  --fg: 237 238 240;
-  --fg-2: 168 174 184;
-  --fg-3: 125 132 142; /* 5.6:1 on --bg */
-  --accent: 233 180 76;
-  --ok: 74 222 128;
-
-  --line: rgba(255, 255, 255, 0.08);
-  --line-strong: rgba(255, 255, 255, 0.2);
-  --accent-soft: rgba(233, 180, 76, 0.12);
-  --grid: rgba(255, 255, 255, 0.045);
-}
-
 [data-theme="light"] {
   color-scheme: light;
-  --bg: 251 250 248;
+  --bg: 247 246 243; /* warm paper */
   --elev: 255 255 255;
-  --fg: 20 22 26;
-  --fg-2: 74 81 91;
-  --fg-3: 107 114 124; /* 4.9:1 on --bg — was 4.0:1 */
-  --accent: 138 90 11;
+  --fg: 26 28 31; /* ink */
+  --fg-2: 73 79 87;
+  --fg-3: 104 111 120; /* 4.9:1 on --bg */
+  --accent: 31 72 140; /* blueprint blue */
   --ok: 21 127 61;
 
-  --line: rgba(18, 20, 24, 0.11);
-  --line-strong: rgba(18, 20, 24, 0.26);
-  --accent-soft: rgba(138, 90, 11, 0.09);
-  --grid: rgba(18, 20, 24, 0.05);
+  --line: rgba(26, 28, 31, 0.14);
+  --line-strong: rgba(26, 28, 31, 0.32);
+  --accent-soft: rgba(31, 72, 140, 0.08);
+  --grid: rgba(26, 28, 31, 0.05);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: 12 14 18; /* ink night */
+  --elev: 18 21 27;
+  --fg: 234 236 239;
+  --fg-2: 165 172 182;
+  --fg-3: 124 132 143; /* 5.5:1 on --bg */
+  --accent: 138 168 220; /* blueprint blue, lifted for dark */
+  --ok: 74 222 128;
+
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.24);
+  --accent-soft: rgba(138, 168, 220, 0.12);
+  --grid: rgba(255, 255, 255, 0.05);
 }
 
 html {
@@ -59,6 +60,11 @@ body {
   color: rgb(var(--fg));
   font-feature-settings: "kern", "liga", "calt";
   text-rendering: optimizeLegibility;
+}
+
+/* Newsreader is an optical-size font; let the browser use it. */
+.font-serif {
+  font-optical-sizing: auto;
 }
 
 ::selection {
@@ -82,7 +88,6 @@ body {
 :focus-visible {
   outline: 2px solid rgb(var(--accent));
   outline-offset: 3px;
-  border-radius: 2px;
 }
 
 @layer components {
@@ -100,24 +105,28 @@ body {
     @apply h-px w-full bg-line;
   }
 
-  .chip {
-    @apply inline-flex items-center rounded-full border border-line px-2.5 py-1
-           font-mono text-label tracking-tight text-fg3
-           transition-colors duration-200;
+  /* Sharp editorial buttons: mono small caps, no radius. */
+  .btn {
+    @apply inline-flex items-center gap-2 border px-5 py-3
+           font-mono text-label uppercase transition-colors duration-200;
+  }
+  .btn-primary {
+    @apply btn border-fg bg-fg text-bg hover:border-accent hover:bg-accent;
+  }
+  .btn-ghost {
+    @apply btn border-line-strong text-fg hover:border-accent hover:text-accent;
   }
 
-  .chip-hover:hover .chip,
-  .chip:hover {
-    @apply border-line-strong text-fg2;
-  }
-
-  /* The one-line claim that leads an experience row or project card. */
+  /* The one-line claim that leads an experience row or project row:
+     serif italic against a blue rule, like a standfirst. */
   .pull {
-    @apply border-l-2 border-accent/60 pl-4 text-pretty text-fg;
+    @apply border-l-2 border-accent pl-4 font-serif italic leading-relaxed text-fg;
+    font-optical-sizing: auto;
   }
 
-  .card {
-    @apply rounded-2xl border border-line bg-elev/40 transition-colors duration-300;
+  /* Mono metadata line — tech stacks, contexts. Replaces chip clouds. */
+  .dataline {
+    @apply font-mono text-xs tracking-tight text-fg3;
   }
 
   .link-underline {
@@ -130,7 +139,7 @@ body {
 }
 
 @layer utilities {
-  /* Faint engineering-graph grid, faded out toward the edges. */
+  /* Faint graph-paper grid behind the masthead, faded toward the edges. */
   .bg-grid {
     background-image: linear-gradient(var(--grid) 1px, transparent 1px),
       linear-gradient(90deg, var(--grid) 1px, transparent 1px);
@@ -190,8 +199,8 @@ body {
   }
 }
 
-/* Printing a portfolio is a real thing recruiters do. Collapse the dark
-   theme, drop decoration, and stop cards breaking across pages. */
+/* Printing a portfolio is a real thing recruiters do. The paper theme
+   already prints well; just drop chrome and keep rows on one page. */
 @media print {
   [data-print-hide] {
     display: none !important;
@@ -204,11 +213,8 @@ body {
   .bg-grid {
     display: none !important;
   }
-  .card,
   article {
     break-inside: avoid;
-    border-color: #ccc !important;
-    background: #fff !important;
   }
   a[href^="http"]::after {
     content: " (" attr(href) ")";

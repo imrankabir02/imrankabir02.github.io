@@ -16,7 +16,7 @@ export default function Skills() {
           {SKILLSETS.map((skill, i) => (
             <li
               key={skill}
-              className="group flex items-baseline gap-4 border-b border-line px-1 py-5 transition-colors hover:bg-elev/50 sm:px-4"
+              className="group flex items-baseline gap-4 border-b border-line px-1 py-5 transition-colors hover:bg-elev/60 sm:px-4"
             >
               <span className="label tnum text-fg3 transition-colors group-hover:text-accent">
                 {String(i + 1).padStart(2, "0")}
@@ -29,17 +29,17 @@ export default function Skills() {
         </ul>
       </Reveal>
 
-      <div className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+      {/* The toolbox as a ledger: category left, tools right, one hairline
+          per row — reads like a spec sheet, not a tag cloud. */}
+      <div className="mt-16 border-t border-line">
         {SKILL_GROUPS.map((group, i) => (
-          <Reveal key={group.heading} delay={i * 0.06}>
-            <h3 className="label text-fg3">{group.heading}</h3>
-            <ul className="mt-4 flex flex-wrap gap-2">
-              {group.items.map((item) => (
-                <li key={item} className="chip">
-                  {item}
-                </li>
-              ))}
-            </ul>
+          <Reveal key={group.heading} delay={i * 0.04}>
+            <div className="grid gap-2 border-b border-line py-5 md:grid-cols-[15rem_1fr] md:gap-10 md:px-4">
+              <h3 className="label pt-0.5 text-fg3">{group.heading}</h3>
+              <p className="font-mono text-sm text-fg2">
+                {group.items.join(" · ")}
+              </p>
+            </div>
           </Reveal>
         ))}
       </div>
