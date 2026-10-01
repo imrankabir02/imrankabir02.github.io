@@ -105,12 +105,14 @@ export default function TripTrackPage() {
         </div>
 
         <div className="mt-8 flex items-center gap-5">
-          <div
-            aria-hidden
-            className="grid h-16 w-16 shrink-0 place-items-center bg-accent font-serif text-3xl font-medium text-bg"
-          >
-            T
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/triptrack/logo.png"
+            alt="TripTrack logo"
+            width={64}
+            height={64}
+            className="h-16 w-16 shrink-0 rounded-[22%]"
+          />
           <h1 className="font-serif text-h1 font-medium">TripTrack</h1>
         </div>
 
