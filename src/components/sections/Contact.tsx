@@ -34,6 +34,12 @@ export default function Contact() {
       lede="Most of the systems above are private, so the code isn't public — but the architecture, the tradeoffs, and the things that went wrong are all fair game. Email is the fastest way to reach me."
     >
       <Reveal>
+        <p className="mb-6 font-mono text-xs text-fg3 sm:text-sm">
+          HTTP/1.1 <span className="text-ok">200 OK</span> · your request made
+          it through every layer
+        </p>
+      </Reveal>
+      <Reveal>
         <a
           href={`mailto:${MY_DETAILS.email}`}
           className="group inline-flex max-w-full items-baseline gap-3 break-all font-serif text-h2 font-medium italic text-fg transition-colors hover:text-accent"

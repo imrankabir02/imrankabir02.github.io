@@ -24,8 +24,6 @@ const SPEC = [
 export default function Hero() {
   return (
     <section id="top" className="relative overflow-hidden">
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-grid" />
-
       <div className="shell relative pb-section pt-10 md:pt-14">
         <Reveal>
           <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 border-b border-line pb-4">
@@ -54,14 +52,19 @@ export default function Hero() {
         </Reveal>
 
         <Reveal delay={0.05}>
-          <h1 className="mt-12 text-balance font-serif text-h1 font-medium text-fg">
+          <p className="mt-12 font-mono text-xs text-fg3 sm:text-sm">
+            <span className="text-accent">GET</span>{" "}
+            <span className="type-in">/mridha-imran-kabir HTTP/1.1</span>
+            <span aria-hidden className="caret ml-0.5 text-accent">▍</span>
+          </p>
+          <h1 className="mt-4 text-balance font-serif text-h1 font-medium text-fg">
             {MY_DETAILS.name}
           </h1>
           <div aria-hidden className="mt-8 h-[3px] w-20 bg-accent" />
         </Reveal>
 
         <Reveal delay={0.1}>
-          <p className="mt-8 max-w-3xl text-pretty font-serif text-deck italic text-fg2">
+          <p className="mt-8 max-w-2xl text-pretty font-serif text-deck italic text-fg2">
             {ABOUT_LEAD}
           </p>
         </Reveal>

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Reveal from "./Reveal";
+import { HOPS, hopFor } from "@/lib/hops";
 
 /**
  * Every section shares the same head: a mono index rail, the section name,
@@ -21,6 +22,8 @@ export default function Section({
   lede?: string;
   children: ReactNode;
 }) {
+  const hop = hopFor(id);
+  const layer = hop ? HOPS.indexOf(hop) : -1;
   return (
     <section id={id} className="scroll-mt-24 py-section">
       <div className="shell">
@@ -28,7 +31,14 @@ export default function Section({
           <div className="flex items-center gap-4">
             <span className="label tnum text-accent">{index}</span>
             <span className="label text-fg3">{eyebrow}</span>
-            <span className="rule flex-1" />
+            <span className="rule rule-draw flex-1" />
+            {hop ? (
+              <span
+                className={`label hidden sm:inline ${hop.gate ? "text-danger" : hop.ok ? "text-ok" : "text-fg3"}`}
+              >
+                L{String(layer).padStart(2, "0")} · {hop.name} · {hop.detail}
+              </span>
+            ) : null}
           </div>
 
           <h2 className="mt-8 max-w-3xl text-balance font-serif text-h2 font-medium">

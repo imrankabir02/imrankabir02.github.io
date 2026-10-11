@@ -25,6 +25,7 @@
   --fg-3: 104 111 120; /* 4.9:1 on --bg */
   --accent: 31 72 140; /* blueprint blue */
   --ok: 21 127 61;
+  --danger: 185 38 46; /* the RLS gate */
 
   --line: rgba(26, 28, 31, 0.14);
   --line-strong: rgba(26, 28, 31, 0.32);
@@ -41,6 +42,7 @@
   --fg-3: 124 132 143; /* 5.5:1 on --bg */
   --accent: 138 168 220; /* blueprint blue, lifted for dark */
   --ok: 74 222 128;
+  --danger: 248 113 113;
 
   --line: rgba(255, 255, 255, 0.1);
   --line-strong: rgba(255, 255, 255, 0.24);
@@ -175,14 +177,52 @@ body {
 @media (prefers-reduced-motion: no-preference) {
   html.js .reveal {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(18px);
+    filter: blur(6px);
     transition:
-      opacity 0.5s cubic-bezier(0.22, 0.61, 0.36, 1),
-      transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+      opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1),
+      filter 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  html.js .reveal .rule-draw {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.15s;
+  }
+  html.js .reveal.is-visible .rule-draw {
+    transform: none;
+  }
+
+  /* The hero's request line types itself out once. */
+  .type-in {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: bottom;
+    animation: type-in 1.4s steps(28, end) 0.3s both;
+  }
+  @keyframes type-in {
+    from { max-width: 0; }
+    to { max-width: 100%; }
+  }
+  .caret {
+    animation: caret 1s steps(1) infinite;
+  }
+  @keyframes caret {
+    50% { opacity: 0; }
+  }
+
+  /* The 3D stack fades in when its chunk arrives, never pops. */
+  .stack-canvas:not(.is-ready) {
+    visibility: hidden;
+  }
+  .stack-canvas {
+    transition: opacity 0.4s linear;
   }
   html.js .reveal.is-visible {
     opacity: 1;
     transform: none;
+    filter: none;
   }
 }
 

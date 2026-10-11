@@ -7,12 +7,16 @@ import Experience from "@/components/sections/Experience";
 import Projects from "@/components/sections/Projects";
 import Education from "@/components/sections/Education";
 import Contact from "@/components/sections/Contact";
+import SceneLoader from "@/components/scene/SceneLoader";
+import HopRail from "@/components/scene/HopRail";
 
 export default function Home() {
   return (
     <>
+      <SceneLoader />
+      <HopRail />
       <Nav />
-      <main>
+      <main className="relative z-10">
         <Hero />
         <About />
         <Skills />
@@ -21,7 +25,9 @@ export default function Home() {
         <Education />
         <Contact />
       </main>
-      <Footer />
+      <div className="relative z-10">
+        <Footer />
+      </div>
     </>
   );
 }

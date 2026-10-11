@@ -24,6 +24,7 @@ const config: Config = {
         fg3: "rgb(var(--fg-3) / <alpha-value>)",
         accent: "rgb(var(--accent) / <alpha-value>)",
         ok: "rgb(var(--ok) / <alpha-value>)",
+        danger: "rgb(var(--danger) / <alpha-value>)",
         // Already alpha by definition — no modifier needed.
         line: "var(--line)",
         "line-strong": "var(--line-strong)",
