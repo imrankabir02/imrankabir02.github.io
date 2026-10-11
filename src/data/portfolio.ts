@@ -56,34 +56,39 @@ export const MY_DETAILS = {
 
 export const ABOUT_TEXT = `Backend engineer in Django, Laravel, and FastAPI. Most of my work is unglamorous: slow queries made fast, jobs that survive bad input, systems that tell you when they break.
 
-I care about the 2am details — idempotent jobs, per-row error isolation, tenant data the database itself keeps from leaking, indexes chosen for the real query. I've owned systems end to end — a multi-tenant SaaS backend, a broad internal platform, workflow engines, data pipelines — from schema design through migration, deployment, and the Linux boxes they run on.`;
+I care about the 2am details — idempotent jobs, per-row error isolation, tenant data the database itself keeps from leaking, indexes chosen for the real query. I've owned systems end to end — a multi-tenant SaaS backend, a broad internal platform, workflow engines, data pipelines — from schema design through migration, deployment, and the Linux boxes they run on.
+
+Outside work I build in TypeScript and Flutter: a licensed warehouse/POS system on NestJS, a live-tracking app on Supabase and Postgres policies, a marketplace on PostGIS, and a published open dataset of Bangladesh's electricity demand.`;
 
 export const SKILLSETS: string[] = [
   "REST API design",
   "Query optimisation & indexing",
   "Background jobs & queues",
   "Multi-tenant data isolation",
+  "Real-time systems (WebSockets, LISTEN/NOTIFY)",
+  "Geospatial queries (PostGIS)",
   "Workflow & state machines",
   "Schema design & migrations",
   "Deployment & CI/CD",
+  "Offline-first & licence-based app design",
 ];
 
 export const SKILL_GROUPS: SkillGroup[] = [
   {
     heading: "Languages",
-    items: ["Python", "PHP", "JavaScript"],
+    items: ["Python", "TypeScript", "PHP", "Dart", "JavaScript"],
   },
   {
     heading: "Frameworks",
-    items: ["Django", "Laravel", "FastAPI", "React"],
+    items: ["Django", "Laravel", "FastAPI", "NestJS", "Next.js", "React", "Flutter"],
   },
   {
     heading: "Data",
-    items: ["MySQL", "PostgreSQL", "MSSQL", "Redis"],
+    items: ["PostgreSQL", "PostGIS", "TimescaleDB", "MySQL", "MSSQL", "SQLite", "Supabase", "Redis"],
   },
   {
     heading: "Infrastructure",
-    items: ["Docker", "Celery", "Nginx", "Linux", "AWS", "Git"],
+    items: ["Docker", "Celery", "Nginx", "Linux", "WebSockets", "GitHub Actions", "GitLab CI", "AWS", "Git"],
   },
 ];
 
@@ -231,6 +236,76 @@ export const PROJECTS: Project[] = [
     technologies: ["Django", "MSSQL", "Docker", "Nginx", "uWSGI", "CI/CD"],
   },
   {
+    title: "Bangladesh Electricity Demand Dataset",
+    ownership: "SOLO",
+    status: "Published",
+    metric: "2,469",
+    metricLabel: "DAYS",
+    outcome:
+      "Public PDFs with no API, turned into tidy tables that check themselves.",
+    context: "Python · Web scraping · PDF extraction · Zenodo",
+    appLink: "https://doi.org/10.5281/zenodo.21783853",
+    description:
+      "Daily electricity demand, generation and load-shedding data for Bangladesh, reconstructed from PDF reports that BPDB and NLDC publish with no bulk download and no API. Scrapers and extractors turn them into tidy CSVs at system, zone, power-station and substation level, from 2019 to 2026, with a dataset paper in preparation.",
+    highlights: [
+      "Resume-safe scrapers: re-running fills gaps instead of starting over",
+      "Extraction validated against identities the source itself must satisfy, not plausibility rules",
+      "Versioned release with a DOI, a citation file, and ERA5 weather and BPDB's own forecast alongside",
+    ],
+    technologies: ["Python", "pdftotext", "Scrapers", "ERA5", "Zenodo"],
+  },
+  {
+    title: "WPOS — Warehouse & POS with Central Licensing",
+    ownership: "SOLO",
+    status: "In development",
+    outcome:
+      "Software installed on a customer's own server that still can't run without a signed licence.",
+    context: "NestJS · React · Prisma · Ed25519",
+    note: "Private repository — walkthrough on request.",
+    description:
+      "An on-premise warehouse and point-of-sale system, activated by an Ed25519-signed licence token from a hosted central monitoring system. A shared licence-core package holds the token format, verification, machine fingerprint and state machine for both sides.",
+    highlights: [
+      "pnpm/Turborepo monorepo: client API and web, CMS API and web, a shared licence-core package",
+      "Catalog, purchasing, accounting and a POS with offline sync, split payments, post-dated cheques and refunds",
+      "CMS with licence lifecycle, telemetry, releases, key rotation and an audit trail; Docker, .deb and Windows installers",
+    ],
+    technologies: ["NestJS", "React", "Prisma", "PostgreSQL", "Electron", "Docker"],
+  },
+  {
+    title: "Varalagbe — Local Micro-Job Marketplace",
+    ownership: "SOLO",
+    status: "Pre-launch",
+    outcome:
+      "Moved the whole backend from Django to TypeScript without logging a single user out.",
+    context: "TypeScript · Supabase · PostGIS · Flutter",
+    note: "Private repository — walkthrough on request.",
+    description:
+      "A hyperlocal two-sided marketplace matching customers with nearby verified workers for household jobs, from posting a job through price negotiation, completion, a commission ledger and ratings. I migrated the backend from Django to a TypeScript API on Supabase, planned so existing sessions kept working.",
+    highlights: [
+      "PostGIS radius search to rank nearby workers; phone-OTP auth with rotating refresh tokens",
+      "WebSocket chat fanned out across instances with Postgres LISTEN/NOTIFY, with message order preserved",
+      "Customer and worker Flutter apps sharing one core package; CI on backend and mobile",
+    ],
+    technologies: ["TypeScript", "Hono", "Supabase", "PostGIS", "Flutter", "pg_cron"],
+  },
+  {
+    title: "TripTrack — Live Transport Tracking",
+    ownership: "SOLO",
+    status: "Live",
+    outcome:
+      "A whole backend with no server to run — the database's own rules decide who sees what.",
+    context: "Flutter · Supabase · MapLibre",
+    appLink: "/triptrack",
+    description:
+      "A private, approval-based transport app for a closed community of passengers, drivers and a transport authority. Passengers watch their bus live on a map, drivers broadcast GPS during a trip, and admins approve registrations and schedule trips. Access is enforced by Postgres Row Level Security rather than a custom server.",
+    highlights: [
+      "One Flutter app, three roles; the screens follow the signed-in user's role",
+      "Schema, RLS policies and RPC functions in migrations, with RLS tests on plain PostgreSQL",
+      "Bus-near-my-stoppage alerts, trip scheduling on the Bangladesh working week, Android APKs per ABI",
+    ],
+    technologies: ["Flutter", "Supabase", "Row Level Security", "MapLibre", "GitHub Actions"],
+  },
+  {
     title: "Gatepass — Approval Workflow",
     ownership: "BACKEND",
     status: "In production",
@@ -265,8 +340,45 @@ export const PROJECTS: Project[] = [
       "Dual-portal architecture over one shared domain model",
       "Business rules isolated in a dedicated services layer",
       "Database-driven fine-grained access control (UBAC) with a full audit trail",
+      "Access-controlled file delivery with upload validation, and per-action activity logging",
     ],
     technologies: ["Django", "Services Layer", "UBAC", "Tailwind", "Bootstrap"],
+  },
+  {
+    title: "Hospital Patient Service System",
+    ownership: "SOLO",
+    status: "In development",
+    outcome:
+      "A patient's journey from registration to billing, with the waiting room's screen updating live.",
+    org: "Backend · Healthcare client system",
+    context: "Django · Channels · MSSQL",
+    note: "Client system · architecture only — walkthrough on request.",
+    description:
+      "An integrated patient service system covering registration, queueing, consultation, investigations, inpatient care and billing. Visits get a daily serial token and a WebSocket-driven display board shows the queue live.",
+    highlights: [
+      "Consultations stay draft until signed, then lock; later changes are addenda, not edits",
+      "Signed orders route to the owning department's worklist; inpatient charting, bedside ordering and medication administration records",
+      "Role-based staff UI, invoices and payments with revenue analytics, plus characterization tests around lab and pharmacy flows",
+    ],
+    technologies: ["Django", "DRF", "Channels", "MSSQL", "Redis", "Docker"],
+  },
+  {
+    title: "Log Ingestion & Monitoring",
+    ownership: "BACKEND",
+    status: "In production",
+    outcome:
+      "One broken index can no longer freeze every other device's logs, and someone is told when it happens.",
+    org: "Backend · CloudHub",
+    context: "Django · Celery · Docker · Telegram alerts",
+    note: "Client product · architecture only — walkthrough on request.",
+    description:
+      "A log-ingestion and monitoring product for network operators. My work is on reliability and correctness: isolating ingestion failures, making search return only the right subscriber's logs, and alerting operators on problems and recovery.",
+    highlights: [
+      "Ingestion isolates per-index failures and raises an alert instead of stalling",
+      "Search and router filters matched on exact host and per-router identity, not on IP prefixes or reused addresses",
+      "Telegram and SMTP alerts for client faults and recovery, with licence renewal history and exports",
+    ],
+    technologies: ["Django", "Celery", "Docker", "Telegram Bot API", "SMTP"],
   },
   {
     title: "Reliable Background Import System",
@@ -338,13 +450,81 @@ export const PROJECTS: Project[] = [
     technologies: ["React 19", "Vite", "Supabase", "localStorage"],
   },
   {
+    title: "Income & Expense Tracker",
+    ownership: "SOLO",
+    status: "Live",
+    metric: "0",
+    metricLabel: "SERVERS",
+    outcome:
+      "No backend and no telemetry — backups live in the user's own Google account, encrypted.",
+    context: "Flutter · SQLite · Google Drive",
+    note: "Open on request · Android build.",
+    description:
+      "An offline-first personal finance app. Transactions live in a local SQLite database; backups are AES-256 encrypted and stored in the user's own Drive. The decryption key sits in Drive's hidden app-data folder, so signing in on a new phone restores everything.",
+    highlights: [
+      "Encrypted backup with scheduled runs, retention, and replace / merge / selective restore with a preview",
+      "Accounts, budgets with alert thresholds, recurring transactions, receipt photos, CSV / Excel / PDF export",
+      "Biometric app lock; CI that fails fast on bad signing secrets",
+    ],
+    technologies: ["Flutter", "sqflite", "AES-256", "Google Drive API", "GitHub Actions"],
+  },
+  {
+    title: "Supervisor Radar",
+    ownership: "SOLO",
+    status: "In use",
+    outcome:
+      "Where a directory can't be crawled, it finds the same people from the open bibliographic record.",
+    context: "Python · Crawling · OpenAlex · FastAPI",
+    note: "Open on request.",
+    description:
+      "A pipeline that finds, enriches and ranks research supervisors for MS/PhD applications. It crawls faculty pages, resolves each person against open bibliographic APIs, detects funding and recruiting signals, scores fit, drafts outreach and tracks applications in a dashboard. Retargeting to another field means editing one YAML file.",
+    highlights: [
+      "Per-host polite crawling with departments run in parallel",
+      "Falls back to bibliographic data for bot-challenged or client-rendered directories",
+      "Refresh runs on CI and commits the updated export",
+    ],
+    technologies: ["Python", "FastAPI", "OpenAlex", "ORCID", "YAML", "GitHub Actions"],
+  },
+  {
+    title: "content-maker — Automated Video Pipeline",
+    ownership: "SOLO",
+    status: "In use",
+    outcome:
+      "A daily video with a human approval tap, and no topic or snippet ever reused.",
+    context: "TypeScript · Remotion · GitHub Actions",
+    note: "Open on request.",
+    description:
+      "Every day an LLM proposes one code trick, Remotion renders it as a vertical code animation, and the MP4 goes to Telegram for a quick approval before publishing as a YouTube Short and an Instagram Reel. A committed ledger prevents repeats.",
+    highlights: [
+      "LLM generation, render, human approval gate, then publishing, all on GitHub Actions",
+      "Dedup ledger committed to the repo; written design blueprint with platform and policy-risk notes",
+    ],
+    technologies: ["TypeScript", "Remotion", "Gemini / Claude API", "Telegram Bot API", "GitHub Actions"],
+  },
+  {
+    title: "Khulna University CSE Alumni Portal",
+    ownership: "SOLO",
+    status: "Prototype",
+    outcome:
+      "A modular monolith where each domain is its own app and could be extracted later.",
+    context: "Django · Next.js · PostgreSQL · Celery",
+    note: "Community project · walkthrough on request.",
+    description:
+      "A verified-membership network for the department's alumni, replacing a static directory. Directory, mentorship, job board with referrals, events, forums and a moderation and verification portal sit in separate Django apps behind one deployable unit.",
+    highlights: [
+      "Verification and moderation queues with an audit log",
+      "Transactional email through Celery so slow SMTP never blocks a response; images transcoded to WebP on ingest",
+    ],
+    technologies: ["Django", "DRF", "Next.js", "PostgreSQL", "Redis", "Celery"],
+  },
+  {
     title: "BanglaHealth — Health Records Prototype",
     ownership: "SOLO",
     status: "Prototype",
     metric: "~20",
     metricLabel: "MODELS",
     outcome:
-      "Honest status: the hard domain modelling is done, the test suite is not.",
+      "A doctor sees a record only after the citizen approves — and a test matrix enforces it.",
     context: "Django · DRF · Celery · Docker",
     note: "Work-in-progress prototype — private repository, walkthrough on request.",
     description:
@@ -352,7 +532,7 @@ export const PROJECTS: Project[] = [
     highlights: [
       "~20 models across patients, practitioners, records, and consent",
       "Celery workers for notifications and background aggregation",
-      "Honest status: ambitious prototype, not production — thin tests are next",
+      "Consent enforcement matrix, CI-generated keys, and a rehearsed restore — honest status: prototype, not production",
     ],
     technologies: ["Django", "DRF", "Celery", "PostgreSQL", "Docker"],
   },
