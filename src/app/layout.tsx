@@ -33,7 +33,7 @@ const OG_IMAGE = {
   alt: `${MY_DETAILS.name} — ${MY_DETAILS.title}`,
 };
 const DESCRIPTION =
-  "Backend engineer working in Django, Laravel, and FastAPI — multi-tenant data isolation, background jobs that survive bad input, query optimisation, and the deployments underneath them.";
+  "Backend engineer working in Django, FastAPI, Laravel, and TypeScript, with Flutter apps on the side — multi-tenant data isolation, background jobs that survive bad input, PostGIS and real-time systems, and the deployments underneath them.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -47,6 +47,11 @@ export const metadata: Metadata = {
     "Django",
     "FastAPI",
     "Laravel",
+    "TypeScript",
+    "Flutter",
+    "Supabase",
+    "PostGIS",
+    "Next.js",
     "PostgreSQL",
     "Celery",
     "multi-tenant",
@@ -88,7 +93,7 @@ const JSON_LD = {
   sameAs: [MY_DETAILS.github],
   worksFor: { "@type": "Organization", name: MY_DETAILS.company },
   address: { "@type": "PostalAddress", addressLocality: MY_DETAILS.address },
-  knowsAbout: ["Django", "FastAPI", "Laravel", "PostgreSQL", "Celery", "Docker"],
+  knowsAbout: ["Django", "FastAPI", "Laravel", "TypeScript", "Flutter", "PostgreSQL", "PostGIS", "Celery", "Docker"],
 };
 
 export const viewport = {

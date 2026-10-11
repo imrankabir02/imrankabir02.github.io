@@ -11,9 +11,9 @@ const ABOUT_LEAD = ABOUT_TEXT.split(/\n\s*\n/)[0].trim();
 // invisible by nature — it front-loads the facts a reviewer scans for.
 const SPEC = [
   { k: "Focus", v: "Backend systems, end to end" },
-  { k: "Stack", v: "Django · Laravel · FastAPI" },
-  { k: "Data", v: "PostgreSQL · MySQL · MSSQL · Redis" },
-  { k: "Runs on", v: "Docker · Nginx · Linux · AWS" },
+  { k: "Stack", v: "Django · FastAPI · Laravel · TypeScript · Flutter" },
+  { k: "Data", v: "PostgreSQL · PostGIS · TimescaleDB · MSSQL · Redis" },
+  { k: "Runs on", v: "Docker · Nginx · Linux · CI/CD" },
   { k: "Based", v: MY_DETAILS.address },
 ];
 
