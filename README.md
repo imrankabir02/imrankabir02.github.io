@@ -1,7 +1,7 @@
 # Mridha Imran Kabir — Portfolio
 
 Personal site for a backend engineer, deployed to GitHub Pages at
-**[testtracker.me](https://testtracker.me)**.
+**[imrankabir02.github.io](https://imrankabir02.github.io)**.
 
 Built as a static export: no database, no CMS, no runtime API. All content lives
 in one typed TypeScript module, and pushing to `main` rebuilds and redeploys.

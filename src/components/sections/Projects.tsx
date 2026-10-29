@@ -88,6 +88,8 @@ function ProjectRow({ project }: { project: Project }) {
 }
 
 export default function Projects() {
+  const featured = PROJECTS.filter((project) => project.featured);
+  const others = PROJECTS.filter((project) =>!project.featured);
   return (
     <Section
       id="work"
@@ -97,7 +99,14 @@ export default function Projects() {
       lede="Backend systems don't photograph well, so each entry is the problem, the decision I made, and what it cost — not a screenshot. Employer and client work is described at the engineering level only."
     >
       <div className="border-t border-line">
-        {PROJECTS.map((project, i) => (
+        <h3 className="py-6 font-mono text-xs uppercase tracking-widest text-fg3">Featured projects</h3>
+        {featured.map((project, i) => (
+          <Reveal key={project.title} delay={Math.min(i, 3) * 0.04}>
+            <ProjectRow project={project} />
+          </Reveal>
+        ))}
+        <h3 className="py-6 font-mono text-xs uppercase tracking-widest text-fg3">All systems</h3>
+        {others.map((project, i) => (
           <Reveal key={project.title} delay={Math.min(i, 3) * 0.04}>
             <ProjectRow project={project} />
           </Reveal>

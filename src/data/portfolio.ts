@@ -41,6 +41,7 @@ export interface Project {
   description: string;
   highlights?: string[];
   technologies: string[];
+  featured?: boolean;
 }
 
 export const MY_DETAILS = {
@@ -52,6 +53,7 @@ export const MY_DETAILS = {
   email: "imrankabir325@gmail.com",
   address: "Bagerhat, Bangladesh",
   github: "https://github.com/imrankabir02",
+  availability: "Open to full-time remote roles",
 } as const;
 
 export const ABOUT_TEXT = `Backend engineer in Django, Laravel, and FastAPI. Most of my work is unglamorous: slow queries made fast, jobs that survive bad input, systems that tell you when they break.
@@ -192,6 +194,7 @@ export const EDUCATIONS: Education[] = [
 export const PROJECTS: Project[] = [
   {
     title: "CloudHR",
+    featured: true,
     ownership: "LEAD",
     status: "In production",
     outcome:
@@ -217,6 +220,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: "BIFPCL Operations Platform",
+    featured: true,
     ownership: "SOLE",
     status: "In production",
     metric: "80+",
@@ -237,6 +241,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: "Bangladesh Electricity Demand Dataset",
+    featured: true,
     ownership: "SOLO",
     status: "Published",
     metric: "2,469",
@@ -382,6 +387,7 @@ export const PROJECTS: Project[] = [
   },
   {
     title: "Reliable Background Import System",
+    featured: true,
     ownership: "SOLO",
     status: "Private repo",
     metric: "54",

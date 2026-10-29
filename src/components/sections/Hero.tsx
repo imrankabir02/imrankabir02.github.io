@@ -80,6 +80,7 @@ export default function Hero() {
               {MY_DETAILS.email}
             </a>
           </div>
+          <p className="mt-4 text-sm text-fg2">{MY_DETAILS.availability}</p>
         </Reveal>
 
         <Reveal delay={0.2}>

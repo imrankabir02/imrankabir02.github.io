@@ -1,4 +1,4 @@
-import { ArrowUpRight, Building2, Github, MapPin } from "lucide-react";
+import { ArrowUpRight, Building2, Clock, Github, MapPin } from "lucide-react";
 import Section from "../ui/Section";
 import Reveal from "../ui/Reveal";
 import { MY_DETAILS } from "@/data/portfolio";
@@ -22,6 +22,7 @@ const CHANNELS = [
     value: `${MY_DETAILS.role} ${MY_DETAILS.company}`,
     href: MY_DETAILS.companyLink,
   },
+  { icon: Clock, label: "Availability", value: MY_DETAILS.availability, href: null},
 ];
 
 export default function Contact() {
