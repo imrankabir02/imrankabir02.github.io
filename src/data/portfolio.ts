@@ -51,7 +51,7 @@ export const MY_DETAILS = {
   company: "BIFPCL",
   companyLink: "https://www.bifpcl.com/",
   email: "imrankabir325@gmail.com",
-  address: "Bagerhat, Bangladesh",
+  address: "Khulna, Bangladesh",
   github: "https://github.com/imrankabir02",
   availability: "Open to full-time remote roles",
 } as const;
